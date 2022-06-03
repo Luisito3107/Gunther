@@ -110,7 +110,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle(embedData.title)
-                .setDescription(embedData.description)
+                .setDescription(embedData.description.replaceAll("\\n", "\n"))
                 .setColor(embedData.color)
 
             if (embedData.authorname) {
@@ -153,7 +153,7 @@ module.exports = {
         } catch (err) {
             //console.log(err, "hm?")
             const embed = new EmbedBuilder()
-                .setTitle('💣 | Execution failed (eval)')
+                .setTitle('💣 | Embed creation failed')
                 .setDescription(`\`\`\`js` + '\n' + err + `\n` + `\`\`\``)
                 .setColor(0xff0000)
             ctx.editReply({embeds: [embed]})
