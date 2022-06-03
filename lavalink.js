@@ -1,2 +1,2 @@
 const { execSync } = require("child_process");
-execSync("java -jar ./lavalinkserver/Lavalink.jar", { stdio: "inherit" });
+execSync("cd ./lavalinkserver && java -jar Lavalink.jar", { stdio: "inherit" });

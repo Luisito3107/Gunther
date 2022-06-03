@@ -6,7 +6,7 @@ module.exports = class laffeyUtils {
     }
 
     get PREFIX() {
-        return process.env.PREFIX || config.PREFIX
+        return "-"
     }
 
     get OWNERS() {

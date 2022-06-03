@@ -146,7 +146,7 @@ This bot was made thinking of those who have little or no experience with these 
 		 - Take note of the Mongo URI. Rember to replace `<password>` with the one you chose for the Database User.
 
 ## Setup the config.json file
-Find the `config.json.example` file and fill it with all the required information.
+Find the `config.json.example` file and fill it with all the required information, then rename it to `config.json`.
 
     {
       "TOKEN": "Your Discord Bot Token",
@@ -171,7 +171,8 @@ Find the `config.json.example` file and fill it with all the required informatio
       "AUTO_RESUME_DELAY": 1500,
       "DEBUG": true,
       "LOG_USAGE": false,
-      "NETWORK_DEV": "The network device to get the public IP from. Check it with `ip addr` command.",
+      "PUBLIC_IPADDR": "The server public IP address. If set to false, then use NETWORK_DEV and NETWORK_DEV_INDEX to find it.",
+      "NETWORK_DEV": "If PUBLIC_IPADDR is false, the network device to get the public IP from. Check it with `ip addr` command.",
       "NETWORK_DEV_INDEX": A number, the IP index in the network device. Check it with `ip addr` command,
       "DEBUG_SERVER": "The string ID of the Discord server where the elevated commands (like /sendembed and /restart) will be available.",
       "VALID_SERVERS": [
@@ -196,7 +197,16 @@ Find the `config.json.example` file and fill it with all the required informatio
 	 - You may want to leave everything as it is, and only change the `password` string.
 	 - Only change the `port` and `address` value if neccessary. 
 	 - If the address value is `0.0.0.0`, then the node host value will be `localhost`.
-	 - A
+ 10. At this point, everything should be ready to start.
+	 - Test the Lavalink server with `node lavalink`. Wait to see if it starts correctly, then stop with CTRL+C.
+	 - Test the Discord server with `node gunther`. Wait to see if it starts correctly, then stop with CTRL+C. You can safely ignore the node connection error, as the Lavalink server is not active.
+ 11. If everything is ready, start everything with `node start`. The should be fully functional now.
+	 - To see your invite link, you can run `pm2 log` and look for `[INVITE]`. Once invited to a server, you can see the invite link by running the `/invite` slash command.
+	 - To restart the bot (Lavalink or Discord bot server), refer to the `/restart` slash command.
+	 - If you want to stop the bot:
+		 - `pm2 stop lavalink` to stop only the Lavalink server
+		 - `pm2 stop gunther` to stop only the Discord bot server
+		 - `node stop` or `pm2 stop all` to stop both
 
 # Disclaimer
 I will not be responsible for the use that is given to the services provided by Discord, Spotify, KSoft, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.

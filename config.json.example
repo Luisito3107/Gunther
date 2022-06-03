@@ -19,6 +19,7 @@
   "AUTO_RESUME_DELAY": 1500,
   "DEBUG": true,
   "LOG_USAGE": false,
+  "PUBLIC_IPADDR": false,
   "NETWORK_DEV": "eth0",
   "NETWORK_DEV_INDEX": 0,
   "DEBUG_SERVER": "",

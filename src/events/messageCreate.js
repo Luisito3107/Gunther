@@ -1,4 +1,5 @@
 const { VALID_SERVERS } = new (require('../modules/guntherUtils'))();
+const { PREFIX } = new (require('../modules/laffeyUtils'))();
 const {EmbedBuilder} = require('discord.js');
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
         }
 
         // Check for prefix commands
-        if (message.content.startsWith("-")) {
+        if (message.content.startsWith(PREFIX)) {
             message.channel.send({embeds: [new EmbedBuilder().setColor(client.EMBED_COLOR())
                 .setDescription("ℹ️ Prefix commands are not supported now, use slash (/) commands instead.")]});
         }

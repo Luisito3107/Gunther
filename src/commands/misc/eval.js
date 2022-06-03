@@ -4,7 +4,7 @@ const Pagination = require("../../modules/Pagination");
 
 module.exports = {
     name: "eval",
-    description: "Evaluate a code",
+    description: "Evaluate a code snippet",
     args: [{
         "name": "code",
         "description": "Code to execute",

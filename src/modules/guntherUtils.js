@@ -13,24 +13,30 @@ module.exports = class guntherUtils {
     }
     
     get IP_ADDR() {
-        const { networkInterfaces } = require('os');
+        const explicitIp = process.env.PUBLIC_IPADDR ? process.env.PUBLIC_IPADDR : config.PUBLIC_IPADDR;
 
-        const nets = networkInterfaces();
-        const results = Object.create(null);
+        if (!explicitIp) {
+            const { networkInterfaces } = require('os');
 
-        for (const name of Object.keys(nets)) {
-            for (const net of nets[name]) {
-                const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
-                if (net.family === familyV4Value && !net.internal) {
-                    if (!results[name]) {
-                        results[name] = [];
+            const nets = networkInterfaces();
+            const results = Object.create(null);
+
+            for (const name of Object.keys(nets)) {
+                for (const net of nets[name]) {
+                    const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+                    if (net.family === familyV4Value && !net.internal) {
+                        if (!results[name]) {
+                            results[name] = [];
+                        }
+                        results[name].push(net.address);
                     }
-                    results[name].push(net.address);
                 }
             }
+
+            return results[process.env.NETWORK_DEV || config.NETWORK_DEV][process.env.NETWORK_DEV_INDEX || config.NETWORK_DEV_INDEX || 0]
         }
 
-        return results[process.env.NETWORK_DEV || config.NETWORK_DEV][process.env.NETWORK_DEV_INDEX || config.NETWORK_DEV_INDEX || 0]
+        return explicitIp;
     }
 
     EMBED_COLOR(minshade) {
