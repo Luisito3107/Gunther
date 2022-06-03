@@ -17,8 +17,9 @@ module.exports = class laffeyLyrics {
         this.validateToken();
     }
 
-    async search(title) {
-        const x = await this[this.mode](title);
+    async search(title, allresults) {
+        allresults = allresults || false;
+        const x = await this[this.mode](title, allresults);
         
         switch (this.mode) {
             case "ksoft": {
@@ -70,7 +71,8 @@ module.exports = class laffeyLyrics {
         })
     }
 
-    genius(title) {
+    genius(title, allresults) {
+        allresults = allresults || false;
         if (!title) throw new Error("No title was provided")
         if (!this.clients.genius) throw new Error("GENIUS client is either disabled or not ready.")
         return new Promise(async (resolve, reject) => {
@@ -78,13 +80,17 @@ module.exports = class laffeyLyrics {
                 this.clients.genius.search(title).then(async x => {
                     const firstSong = x[0];
                     if (!x.length || !firstSong) return reject("No lyrics was found")
-                    const lyrics = await firstSong.lyrics().catch(reject);
-                    resolve({
-                        lyrics,
-                        artist: x.artist?.name || '',
-                        title: x.title,
-                        artwork: x.image || null
-                    })
+                    if (allresults) {
+                        resolve(x)
+                    } else {
+                        const lyrics = await firstSong.lyrics().catch(reject);
+                        resolve({
+                            lyrics,
+                            artist: x.artist?.name || '',
+                            title: x.title,
+                            artwork: x.image || null
+                        })
+                    }
                 }).catch(reject)
             } catch (e) {
                 reject(e)

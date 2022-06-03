@@ -1,4 +1,5 @@
-const {EmbedBuilder} = require("@discordjs/builders");
+const {EmbedBuilder} = require('discord.js');
+const { EMBED_COLOR } = new (require('../modules/guntherUtils'))();
 
 module.exports = {
     name: 'interactionCreate',
@@ -9,17 +10,17 @@ module.exports = {
         let command = ctx.commandName;
         command = client.commands.get(command);
 
-        if (!command) return ctx.reply({embeds: [this.baseEmbed(`That command is currently not available.`)]});
+        if (!command) return ctx.reply({embeds: [this.baseEmbed(`🚫 | That command is currently unavailable`)]});
 
         try {
             command.execute.bind(this)(ctx, client);
         } catch (e) {
             console.error(e);
-            return ctx.reply({embeds: [this.baseEmbed(`I can't execute \`${command.name}\`. \n\`${e}\``)]}).catch(_ => void 0);
+            return ctx.reply({embeds: [this.baseEmbed(`💣 | Oops, an error occoured while executing **${command.name}**!\n\`\`\`${e ? e : 'No error was provided'}\`\`\``)]}).catch(_ => void 0);
         }
     },
     baseEmbed(content) {
-        return new EmbedBuilder().setColor(0xADD8E6).setDescription(content);
+        return new EmbedBuilder().setColor(EMBED_COLOR()).setDescription(content);
     },
     chunkSubstr(str, size) {
         const numChunks = Math.ceil(str.length / size)

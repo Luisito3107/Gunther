@@ -12,6 +12,12 @@ module.exports = Structure.extend('Player', player => {
             this.nightcore = false;
             this.vaporwave = false;
             this._8d = false;
+            this.karaoke = false;
+            this._pop = false;
+            this.soft = false;
+            this.treblebass = false;
+            this.vibrato = false;
+            this.tremolo = false;
         }
 
         setSpeed(speed) {
@@ -38,6 +44,12 @@ module.exports = Structure.extend('Player', player => {
                 this.setVaporwave(false)
                 this.setBassboost(false)
                 this.setDistortion(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
                 this.setTimescale(1.2999999523162842, 1.2999999523162842, 1);
                 this.nightcore = nc;
             } else this.setTimescale(1, 1, 1);
@@ -55,6 +67,12 @@ module.exports = Structure.extend('Player', player => {
                 this.setBassboost(false)
                 this.setNightcore(false)
                 this.setDistortion(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
                 this.setTimescale(0.8500000238418579, 0.800000011920929, 1);
                 this.vaporwave = vaporwave;
             } else this.setTimescale(1, 1, 1);
@@ -72,6 +90,12 @@ module.exports = Structure.extend('Player', player => {
                 this.setBassboost(false)
                 this.setNightcore(false)
                 this.setVaporwave(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
                 this.setDistort(0.5)
                 this.distortion = distortion;
             } else this.clearEffects();
@@ -80,12 +104,17 @@ module.exports = Structure.extend('Player', player => {
         }
 
         setBassboost(bassboost) {
-
             if (bassboost) {
                 this.nightcore = false;
                 this.vaporwave = false;
                 this.setVaporwave(false)
                 this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
                 this.setEQ(...Array.from({length: 3}, () => {
                     return {band: 1, gain: bassboost}; // this is so nodejs can differentiate which { is for arrow function and which one is for objects
                 }));
@@ -102,6 +131,12 @@ module.exports = Structure.extend('Player', player => {
                 this.vaporwave = false;
                 this.setVaporwave(false)
                 this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
                 this.node.send({
                     op: "filters",
                     guildId: this.guild,
@@ -112,6 +147,193 @@ module.exports = Structure.extend('Player', player => {
                 this._8d = sd
             } else this.clearEffects()
             this._8d = sd
+            return this
+        }
+
+        setKaraoke(karaoke) {
+            if (typeof karaoke != 'boolean') throw new RangeError('<Player>#setKaraoke() must be a boolean.')
+            if (karaoke) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    karaoke: {
+                        level: 1.0,
+                        monoLevel: 1.0,
+                        filterBand: 220.0,
+                        filterWidth: 100.0
+                    },
+                })
+                this.karaoke = karaoke
+            } else this.clearEffects()
+            this.karaoke = karaoke
+            return this
+        }
+
+        setPop(_pop) {
+            if (typeof _pop != 'boolean') throw new RangeError('<Player>#setPop() must be a boolean.')
+            if (_pop) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    equalizer: [
+                        {band: 0, gain: 0.65},
+                        {band: 1, gain: 0.45},
+                        {band: 2, gain: -0.45},
+                        {band: 3, gain: -0.65},
+                        {band: 4, gain: -0.35},
+                        {band: 5, gain: 0.45},
+                        {band: 6, gain: 0.55},
+                        {band: 7, gain: 0.6},
+                        {band: 8, gain: 0.6},
+                        {band: 9, gain: 0.6},
+                        {band: 10, gain: 0},
+                        {band: 11, gain: 0},
+                        {band: 12, gain: 0},
+                        {band: 13, gain: 0},
+                    ],
+                })
+                this._pop = _pop
+            } else this.clearEffects()
+            this._pop = _pop
+            return this
+        }
+
+        setSoft(soft) {
+            if (typeof soft != 'boolean') throw new RangeError('<Player>#setSoft() must be a boolean.')
+            if (soft) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    lowPass: {
+                        smoothing: 20.0
+                    }
+                })
+                this.soft = soft
+            } else this.clearEffects()
+            this.soft = soft
+            return this
+        }
+
+        setTreblebass(treblebass) {
+            if (typeof treblebass != 'boolean') throw new RangeError('<Player>#setTreblebass() must be a boolean.')
+            if (treblebass) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setVibrato(false)
+                this.setTremolo(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    equalizer: [
+                        {band: 0, gain: 0.6},
+                        {band: 1, gain: 0.67},
+                        {band: 2, gain: 0.67},
+                        {band: 3, gain: 0},
+                        {band: 4, gain: -0.5},
+                        {band: 5, gain: 0.15},
+                        {band: 6, gain: -0.45},
+                        {band: 7, gain: 0.23},
+                        {band: 8, gain: 0.35},
+                        {band: 9, gain: 0.45},
+                        {band: 10, gain: 0.55},
+                        {band: 11, gain: 0.6},
+                        {band: 12, gain: 0.55},
+                        {band: 13, gain: 0},
+                    ],
+                })
+                this.treblebass = treblebass
+            } else this.clearEffects()
+            this.treblebass = treblebass
+            return this
+        }
+
+        setVibrato(vibrato) {
+            if (typeof vibrato != 'boolean') throw new RangeError('<Player>#setVibrato() must be a boolean.')
+            if (vibrato) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setTremolo(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    vibrato: {
+                        frequency: 10,
+                        depth: 0.9
+                    }
+                })
+                this.vibrato = vibrato
+            } else this.clearEffects()
+            this.vibrato = vibrato
+            return this
+        }
+
+        setTremolo(tremolo) {
+            if (typeof tremolo != 'boolean') throw new RangeError('<Player>#setTremolo() must be a boolean.')
+            if (tremolo) {
+                this.nightcore = false;
+                this.vaporwave = false;
+                this.setVaporwave(false)
+                this.set8D(false)
+                this.setNightcore(false)
+                this.setKaraoke(false)
+                this.setPop(false)
+                this.setSoft(false)
+                this.setTreblebass(false)
+                this.setVibrato(false)
+                this.node.send({
+                    op: "filters",
+                    guildId: this.guild,
+                    tremolo: {
+                        frequency: 10,
+                        depth: 0.5
+                    }
+                })
+                this.tremolo = tremolo
+            } else this.clearEffects()
+            this.tremolo = tremolo
             return this
         }
 
@@ -241,6 +463,12 @@ module.exports = Structure.extend('Player', player => {
             this.nightcore = false;
             this.vaporwave = false;
             this.distortion = false;
+            this.karaoke = false;
+            this._pop = false;
+            this.soft = false;
+            this.treblebass = false;
+            this.vibrato = false;
+            this.tremolo = false;
             this.clearEQ();
 
             this.node.send({

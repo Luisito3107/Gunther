@@ -9,7 +9,7 @@ module.exports = {
         const player = new Lavalink(client)
         client.player = player
         player.init(client.user.id)
-        client.user.setActivity(`Slash command! | Currently in ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | ${version}`)
+        /*client.user.setActivity(`Slash command! | Currently in ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | ${version}`)
         setInterval(() => {
             let statusList = [
                 `Slash command! | ${client.guilds.cache.size} guild${client.guilds.cache.size <= 1 ? '' : 's'} | ${version}`,
@@ -18,7 +18,8 @@ module.exports = {
             ]
             let chosenStatus = statusList[Math.round(Math.random() * statusList.length)]
             client.user.setActivity(chosenStatus, {type: 3})
-        }, 40000);
+        }, 40000);*/
+        client.setClientPresence("ready");
         console.log(chalk.green(`[CLIENT] => [READY] ${client.user.tag} is now ready!`))
         client.on('raw', (d) => player.updateVoiceState(d))
     }

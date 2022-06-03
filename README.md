@@ -1,285 +1,202 @@
-# Laffey
+# Gunther
+**An awesome and easy-to-setup Lavalink-Discord music bot based on [Laffey](https://github.com/Weeb-Devs/Laffey), plus extra functions and design.**
 
-#### An adorable lavalink discord music bot that has a lot of features inside it.
+This bot was created in memory of [James Michael Tyler](https://en.wikipedia.org/wiki/James_Michael_Tyler), who played the role of [Gunther](https://friends.fandom.com/wiki/Gunther) on the sitcom [Friends](https://en.wikipedia.org/wiki/Friends) (my favorite show) and passed away from cancer in October 2021. However, for versatility this bot uses images of Gunter, the penguin that always accompanies the Ice King in Adventure Time ☺️
 
-![laffey](https://i.imgur.com/P8Hd8LI_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
-> © Azur Lane | First Project of [Weeb-Devs](https://www.github.com/Weeb-Devs)
+![Gunter](https://c.tenor.com/4aKNk-BWBFgAAAAC/adventure-time-penguin.gif)
 
-## Features:
+This bot was created in October, 2021. Then updated to Laffey 2.0 in May-June 2022.
+This is my first Github repository, so if I did something wrong or I can improve in something, please tell me!
+Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating Laffey.
 
-✓ High quality  
-✓ Support filters  
-✓ Auto resume  
-✓ Stable  
-✓ Suport 8 music sources  
-✓ Feature-rich  
-✓ Full slash commands  
-✓ and of course, adorable shipgirl
+## Features
 
-## Current version:
+ - Play audio from multiple sources (depending on the Lavalink server configuration)
+	 - *YouTube*
+	 - *Bandcamp*
+	 - *SoundCloud*
+	 - *Twitch*
+	 - *Vimeo*
+	 - *Spotify (with metadata fetch)*
+	 - *Deezer*
+	 - *Apple Music*
+	 - *HTTP URLs*
+	 - *Local file (Discord attachment, metadata tags supported)*
+ - Support for all Discord Activities (some may require the server to have Nitro)
+	 - *YouTube Together*
+	 - *Poker night*
+	 - *Chess in the Park*
+	 - *Checkers in the Park*
+	 - *Betrayal.io*
+	 - *Fishington.io*
+	 - *Letter Title*
+	 - *Word Snacks*
+	 - *Doodle Crew*
+	 - *Spellcast*
+	 - *Awkword*
+	 - *Putt Party*
+	 - *Sketch Heads*
+	 - *Ocho*
+ - Fetch lyrics from Genius or KSoft
+ - Auto resume play queue
+ - Support for multiple filters and effects
+	 - *Speed*
+	 - *Pitch*
+	 - *Bass boost*
+	 - *Karaoke*
+	 - *8D*
+	 - *Nightcore*
+	 - *Vaporwave*
+	 - *Pop*
+	 - *Soft*
+	 - *Treblebass*
+	 - *Vibrato*
+	 - *Tremolo*
+ - Nice, colorful and easy to use interface
+ - Many more! See Commands section.
 
-- 2.0.0-sd (latest) [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/2.0.0)
-  | No change log _yet_
-- 1.0.0 **M** [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/1.0.0)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/1.0.0.md)
-- 0.1.5 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.5)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.5.md)
-- 0.1.4 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.4)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.4.md)
-- 0.1.3 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.3)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.3.md)
-- 0.1.2 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.2)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.2.md)
-- 0.1.1 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.1)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.1.md)
-- 0.1.0 [Release](https://github.com/Weeb-Devs/Laffey/releases/tag/0.1.0)
-  | [Change Log](https://github.com/Weeb-Devs/Laffey/blob/main/readme/changelogs/0.1.0.md)
-  
-## Registering your slash commands
-Read [this](https://github.com/Weeb-Devs/Laffey/blob/main/readme/REGISTER_SLASH.md) for more information
-## Requirements:
+## Screenshots
+![Play and search](https://i.ibb.co/rfJkGSp/gunther1.png)
+![Lyrics](https://i.ibb.co/Dz5NBs7/gunther2.png)
+![Filters](https://i.ibb.co/TrXCCQ2/gunther3.png)
+![Detailed help and queue finished](https://i.ibb.co/GsLF2HV/gunther4.png)
 
-### Lavalink server
+## Commands
+ - **Tools and information**
+	 - `/about` - See a description about this project
+	 - `/eval < code >` - Evaluate a code snippet
+	 - `/help [ command ]` - Get information of all the available commands
+	 - `/invite` - Gives you a link to invite this bot to other servers
+	 - `/ping` - Check bot's server latency in ms
+	 - `/restart [ type ]` - Restarts the core of Gunther
+	 - `/sendembed < guildid > < title > < description > [ color ] [ authorname ] [ authorurl ] [ authorimageurl ] [ thumbnailurl ] [ imageurl ] [ footertext ] [ footerimageurl ] [ settimestamp ] [ preview ]` - Sends a embed (message) to one or all the servers Gunther is in
+	 - `/stats [ type ]` - Get bot statitics and metrics
+	 - `/youtube` - Starts a YouTube Together session
+	
+ - **Player commands**
+	 - `/clear` - Clear the queue
+	 - `/filters [ set ] [ reset ] [ all ]` - Get all filters status, set or reset them
+	 - `/forceplay [ song ] [ file ]` - Force the playing of a song or a file
+	 - `/grab` - Sends the current song to your direct messages
+		 - `/save`
+	 - `/join` - Make the bot join your voice channel
+	 - /leave - Make the bot leave your voice channel
+		 - `/stop`
+	 - `/loop` - Loop the player
+	 - `/lyrics [ title ]` - Get lyrics of a specific/current playing song
+	 - `/move < from > [ to ]` - Move a song in the queue
+	 - `/nowplaying` - Get details of the currently playing song
+	 - `/pause` - Toggles player's pause
+	 - `/play [ song ] [ file ]` - Add a song or a file to the queue
+	 - `/previous` - Play previous song
+	 - `/queue` - See the current track queue
+	 - `/remove < position >` - Remove song from the queue
+	 - `/resume` - Resume the player
+	 - `/search < query >` - Search and play a specific song
+	 - `/seek < time >` - Seek to a time position in the current song
+	 - `/shuffle` - Shuffle the songs in the queue
+	 - `/skip` - Skip the current song
+		 - `/next`
+	 - `/skipto < position >` - Skip to a specific song
+	 - `/volume [ set ] [ reset ]` - Set/reset the volume of the player
 
-You need dev lavalink version to use our filters. You can get it by
-clicking [Here](https://ci.fredboat.com/viewLog.html?buildId=8767&buildTypeId=Lavalink_Build&tab=artifacts&branch_Lavalink=refs%2Fheads%2Fdev)
-and then, click on `Lavalink.jar`
-files [How to setup](https://github.com/Weeb-Devs/Laffey/blob/main/readme/LAVALINK_INSTALLATION.md)  
-All required OS and other for lavalink server available [here](https://github.com/freyacodes/Lavalink#requirements)
+# Installation and setup
+This bot was made thinking of those who have little or no experience with these topics, I tried to make it as simple as possible.
 
-### Server for the bot to run
+## Requirements
 
-- ⚠️nodejs v16.9.0 or newer⚠️
-- discordjs v14
+ - Linux server with the following packages installed (refer to the Setup the server section)
+	 - npm
+	 - Node.JS, version 16.9.0 or higher
+	 - pm2
+	 - default-jdk
+ - Credentials (refer to the Obtaining credentials section)
+	 - Discord Application ID, Public Key and Bot Token.
+	 - (Optional) Genius/KSoft API Key
+	 - Spotify Client ID and Client Secret
+	 - (Optional) MongoDB URI
 
-### Data
+## Obtaning credentials
 
-- Discord bot's
-  token `You should know why you need this` [Get or create bot here](https://discord.com/developers/applications)
-  | [How to get your bot's token](https://github.com/Weeb-Devs/Laffey/blob/main/readme/CREATE_FIRST_BOT.md)
-- Mongodb
-  URI `for prefix and auto resume feature. It won't work if you enter an invalid URI` [MongoDB](https://account.mongodb.com/account/login)
-- Your ID `for eval command. please note that it's dangerous if eval is accessible to everyone`
-- Ksoft API
-  Key `not required, depends on your chosen lyrics engine` [Click here to get](https://api.ksoft.si/?ref=ksoft.si#get-started)
-- Genius API Key `not required, depends on your chosen lyrics engine` [Click here to get](http://genius.com/api-clients)
-- Lavalink server
-    - Host `url to your lavalink server`
-    - Password `your lavalink's password. Defaults to youshallnotpass`
-    - Port `port for your lavalink server. Defaults to 80`
-    - Identifier `Name for your node. Defaults to it's url`
-    - Retry amount `retry amount when the node encountered an error. Defaults to 3`
-    - Retry delay `delay for each retry. Defaults to 1000 ms`
-    - Secure `wether your node uses an ssl connection. Defaults to false`
+ 1. Start creating a new Discord Application in their [Developers portal](https://discord.com/developers/applications).
+	 - Set picture and description.
+	 - Take note of the Application ID and the Public Key.
+ 2. From the application dashboard, create a bot.
+	 - Set the icon and the username.
+	 - Take of the Token.
+	 - Enable Presence Intent and Message Content Intent.
+ 3. (Optional) Obtain a Genius API Key by creating an API Client in their[Developers portal](https://genius.com/developers).
+	 - Login with your Genius account (or create one).
+	 - Take note of the API KEY.
+ 4. Obtain Spotify API credentials by creating an app in their [Developers dashboard](https://developer.spotify.com/dashboard/login).
+	 - Login with your Spotify account (or create one).
+	 - Set the app name and description.
+	 - Take note of the Client ID and the Client Secret.
+ 5. (Optional) Register at [MongoDB](https://www.mongodb.com/).
+	 - Create a new Database User from the Database Access option in the menu. 
+		 - Select Password as authentication method.
+		 - Type a password or autogenerate one.
+		 - Set the role to Read and write to any database.
+	 - Create a new Database Deployment from the Database option in the menu.
+		 - Select Shared option
+		 - Select cloud provider and region, remember some choices are not free.
+		 - I assume you can leave the other options as they are by default.
+		 - From the database deployment panel, click "Connect".
+		 - Select "Connect your application"
+		 - Take note of the Mongo URI. Rember to replace `<password>` with the one you chose for the Database User.
 
-## Available music sources:
+## Setup the config.json file
+Find the `config.json.example` file and fill it with all the required information.
 
-- youtube`*`
-- bandcamp`*`
-- soundcloud`*`
-- twitch`*`
-- vimeo`*`
-- http (you can use radio for it)`*`
-- spotify`*`
-- deezer`*`
-
-  **Note:**
-    - `*` depends on your lavalink's configuration
-
-## Configuration & Starting the bot:
-
-### With config.json
-
-1. First, change `config.json.example`'s name into `config.json`, and fill it with the following;
-
-```json
-{
-  "TOKEN": "Your bot's token",
-  "PREFIX": "?",
-  "OWNERS": [
-    "Your id, can be more than 1"
-  ],
-  "MONGODB_URI": "For database",
-  "KSOFT_API_KEY": "For the lyrics. It depend on your choice",
-  "GENIUS_API_KEY": "For the lyrics. It depend on your choice",
-  "LYRICS_ENGINE": "There are 3 options. ksoft ; genius ; google . Google doesn't need any API",
-  "NODES": [
     {
-      "HOST": "Your node's host",
-      "PASSWORD": "Your node's password",
-      "PORT": 80,
-      "IDENTIFIER": "This is node's identifier, it's all up to you",
-      "RETRY_AMOUNT": 3,
-      "RETRY_DELAY": 1000,
-      "SECURE": false
-    }
-  ],
-  "AUTO_RESUME_DELAY": 1500,
-  "DEBUG": true,
-  "LOG_USAGE": false
-}
-```
-
-2. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
-3. You're ready to go, use `node .` or `npm start` to start the bot
-
-### With .env <br/>
-
-1. Create a `.env` file in the root directory of your project.<br/>
-2. Copy the text below and paste it in .env file and change the value with required data. ⚠️**NODES in .env must be a
-   STRINGIFIED array of node objects, or you can use normal array for nodes in config.json**⚠️<br/>
-   #### .env file
-    ```
-    TOKEN=TOKEN_HERE
-    PREFIX=?
-    OWNERS=123456789,987654321
-    MONGODB_URI=mongodb+srv://blabla
-    KSOFT_API_KEY=1234
-    GENIUS_API_KEY=1234
-    LYRICS_ENGINE=google
-    AUTO_RESUME_DELAY=2000
-    NODES=[{"HOST":"Your node's host","PASSWORD":"Your node's password","PORT":80,"IDENTIFIER":"This node's identifier, it's up to you","RETRY_AMOUNT":3,"RETRY_DELAY":1000,"SECURE":false}]
-    DEBUG=true
-    LOG_USAGE=false
-    ```  
-   #### config.json file (you don't need this if you already provided NODES in .env)
-    ```json
-    {
+      "TOKEN": "Your Discord Bot Token",
+      "OWNERS": [
+        "Your Discord user ID, can be more than 1"
+      ],
+      "MONGODB_URI": "Your MongoDB URI, can be empty",
+      "LYRICS_ENGINE": "There are 3 options: ksoft, genius or google. Google doesn't need any API key",
+      "KSOFT_API_KEY": "your KSoft API key, can be empty depending on your engine choice.",
+      "GENIUS_API_KEY": "your Genius API key, can be empty depending on your engine choice.",
       "NODES": [
         {
-          "HOST": "Your node's host",
+          "HOST": "localhost",
           "PASSWORD": "Your node's password",
-          "PORT": 80,
-          "IDENTIFIER": "This node's identifier, it's up to you",
+          "PORT": 443,
+          "IDENTIFIER": "This is node's identifier, it's all up to you",
           "RETRY_AMOUNT": 3,
           "RETRY_DELAY": 1000,
           "SECURE": false
         }
+      ],
+      "AUTO_RESUME_DELAY": 1500,
+      "DEBUG": true,
+      "LOG_USAGE": false,
+      "NETWORK_DEV": "The network device to get the public IP from. Check it with `ip addr` command.",
+      "NETWORK_DEV_INDEX": A number, the IP index in the network device. Check it with `ip addr` command,
+      "DEBUG_SERVER": "The string ID of the Discord server where the elevated commands (like /sendembed and /restart) will be available.",
+      "VALID_SERVERS": [
+	      "Array of Discord server IDs. If set, the bot will leave any other server but these."
       ]
     }
-    ```
-3. Go to your console, and type `cd "path to laffey's file"` and install all dependencies by typing `npm i`
-4. You're ready to go, use `node .` or `npm start` to start the bot  
-   <br>  
-   **Note:**
 
-    - `DEBUG` is to see more info when your bot is starting or when a warning was thrown
-    - `LOG_USAGE` is to log all command usage by user. Defaults to false because it'll be annoying
-    - `AUTO_RESUME_DELAY` is how many ms do you want to add a delay between guild on auto resume
-      <br>
-      <br>
+## Setup the server
 
-## Screenshots
+ 1. Clone this repository or download a release and extract it in the server.
+ 2. Open a terminal session in the repository folder.
+ 3. If is not installed, install JDK by running `apt install default-jdk`
+ 4. Install Node.JS by running `apt install nodejs`
+ 5. Install npm by running `apt install npm`
+ 6. Check the installed Node.JS version by running `node -v`
+	 - If it is lower than v16.9.0, then install the n package from npm by running `npm install -g n`
+	 - Run `n stable 16.9.0` to install that version of Node.JS.
+	 - Close and reopen the terminal session in the same folder, then check version again with `node -v`
+ 7. Install lastest pm2 package by running `npm install pm2@latest -g`
+ 8. Run `npm install` to install all the project dependencies.
+ 9. Navigate to the `lavalinkserver` folder, then find the `application.yml` file. Edit it:
+	 - You may want to leave everything as it is, and only change the `password` string.
+	 - Only change the `port` and `address` value if neccessary. 
+	 - If the address value is `0.0.0.0`, then the node host value will be `localhost`.
+	 - A
 
-<img align="center" width="60%" src="https://i.imgur.com/i3HM69M.png">   
-   <br>
-   <br><br>
-  <img align="center" width="60%" src="https://takiyo.is-ne.at/l11Dyy.png">
-
-## Commands
-
-- music
-    - play `plays a music from 7 different music sources`   
-      -example: `/play https://www.youtube.com/playlist?list=PL0jh16Vp3NzVjEjKbZ3pV4f15Jze5EANV`
-
-    - forceplay `same like play, but this will force the player to play a specific song`   
-      -example: `/forceplay https://www.youtube.com/watch?v=dQw4w9WgXcQ`
-
-    - loop `toggle track/queue loop`   
-      -example: `/loop`
-
-    - lyrics `Get specific/current playing song's lyrics`   
-      -example: `/lyrics [ song's title ]`
-
-    - volume `Set player's volume. 0-1000`   
-      -example: `/volume 1000`
-
-    - nowplaying `see the song currently playing`  
-      -example: `/nowplaying`
-
-    - move `Move song`  
-      -example: `/move 2` | `/move 4 3`
-
-    - queue `check all songs inside queue`  
-      -example: `/queue`
-
-    - skip `skip the song`  
-      -example: `/skip`
-
-    - skipto `skip to a specific song`  
-      -example: `/skipto 3`
-
-    - join `Join a voice channel`  
-      -example: `/join`
-
-    - leave `Leave a voice channel`  
-      -example: `/leave`
-
-    - shuffle `Shuffle queue`  
-      -example: `/shuffle`
-
-    - search `search song`  
-      -example: `/search never gonna give you up`
-
-    - clear `Clear the queue`  
-      -example: `/clear`
-
-    - bassboost `Set bassboost filter for the player`  
-      -example: `/bassboost 1 - 200`
-
-    - 24h `whether the bot should leave vc when there's no user or not`  
-      -example: `/24h`
-
-    - vaporwave `Set vaporwave filter for the player`  
-      -example: `/vaporwave`
-
-    - nightcore `Set nightcore filter for the player`  
-      -example: `/nightcore`
-
-    - 8d `Set 8d filter for the player`  
-      -example: `/8d`
-
-    - speed `Set speed for the player`  
-      -example: `/speed 0-5`
-
-    - pitch `Set pitch for the player`  
-      -example: `/pitch 0-5`
-
-    - reset `Reset the filters`  
-      -example: `/reset`
-
-    - filters `Get all filters status`  
-      -example: `/filters`
-
-    - remove `Remove song from queue`  
-      -example: `/remove 3`
-
-    - previous `Play previously played song`  
-      -example: `/previous`
-
-    - resume `Resume the player`  
-      -example: `/resume`
-
-    - pause `Pause the player`  
-      -example: `/pause`
-
-
-- misc
-    - ping `get bot's ping`  
-      -example: `/ping`
-
-    - help `Show list of available commands`  
-      -example: `/help`
-
-    - eval `to evaluate code`  
-      -example: `/eval ctx.channel.send('hello')`
-
-    - invite `Invite your bot to another guild`  
-      -example: `/invite`
-
-## Description & About
-
-Created at: Friday, 2 April 2021  
-Published at: Sunday, 11 April 2021  
-[Laffey](https://github.com/Weeb-Devs/Laffey) is [Weeb-Devs](https://github.com/Weeb-Devs) 's first project. It was created
-by our first member aka owner, Takiyo. He really wants to make his first open source project ever. Because he wants more coding experience. In this project, he was challenged to make a project with less bugs. Hope you enjoy using Laffey!
+# Disclaimer
+I will not be responsible for the use that is given to the services provided by Discord, Spotify, KSoft, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.

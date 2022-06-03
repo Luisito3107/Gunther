@@ -5,9 +5,9 @@ module.exports = {
         if (!needed || needed.length === 0) throw new RangeError('Needed arguments must be in an Array');
 
         const embed = new mEmbed()
-            .setAuthor(name, client.user.displayAvatarURL())
-            .setColor([173, 255, 47, 1])
-            .setTitle('Missing arguments')
+            //.setAuthor(name, client.user.displayAvatarURL())
+            .setColor("RED")
+            .setTitle(`❌ | Missing arguments for the \`${name}\` command`)
             .setDescription('**Usage:**\n\`' + needed.join('\n') + '`')
         return embed;
     },

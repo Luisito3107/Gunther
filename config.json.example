@@ -1,8 +1,8 @@
 {
   "TOKEN": "",
-  "PREFIX": "?",
   "OWNERS": [""],
   "MONGODB_URI": "",
+  "LYRICS_ENGINE": "genius",
   "KSOFT_API_KEY": "",
   "GENIUS_API_KEY": "",
   "NODES": [
@@ -17,7 +17,10 @@
     }
   ],
   "AUTO_RESUME_DELAY": 1500,
-  "LYRICS_ENGINE": "ksoft",
   "DEBUG": true,
-  "LOG_USAGE": false
+  "LOG_USAGE": false,
+  "NETWORK_DEV": "eth0",
+  "NETWORK_DEV_INDEX": 0,
+  "DEBUG_SERVER": "",
+  "VALID_SERVERS": ["", ""]
 }
