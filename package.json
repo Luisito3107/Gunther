@@ -2,7 +2,7 @@
   "name": "gunther",
   "version": "2.0.0",
   "description": "An awesome and easy-to-setup Lavalink-Discord music bot",
-  "main": "index.js",
+  "main": "start.js",
   "dependencies": {
     "@discordjs/builders": "^0.13.0-dev.1647259738.2297c2b",
     "@discordjs/rest": "^0.4.0-dev.1647259762.2297c2b",
@@ -41,6 +41,7 @@
   },
   "scripts": {
     "start": "node start.js",
+    "stop": "node stop.js",
     "slash:register": "node -e 'require(\"./src/modules/slashRegister.js\").registerCommandsFromConsole()'"
   },
   "keywords": [],
@@ -48,13 +49,13 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Weeb-Devs/Laffey.git"
+    "url": "git+https://github.com/Luisito3107/Gunther.git"
   },
   "bugs": {
-    "url": "https://github.com/Weeb-Devs/Laffey/issues"
+    "url": "https://github.com/Luisito3107/Gunther/issues"
   },
   "engines": {
-    "node": ">=14.x"
+    "node": ">=16.9.0"
   },
-  "homepage": "https://github.com/Weeb-Devs/Laffey#readme"
+  "homepage": "https://github.com/Luisito3107/Gunther"
 }
