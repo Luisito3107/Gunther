@@ -17,9 +17,14 @@ module.exports = {
             {name: "Full restart", value: "full"},
             {name: "Bot restart", value: "discord"},
             {name: "Simple restart", value: "simple"},
-            {name: "Reset commands", value: "commandreset"},
+            {name: "Refresh commands", value: "commandreset"},
             {name: "Clear commands", value: "commanddelete"},
         ]
+    }, {
+        "name": "guildid",
+        "description": "ID of the GUILD (or \"all\", can be comma separated)",
+        "type": 3,
+        "required": false
     }],
     async execute(ctx, client) {
         let authorize = false;
@@ -49,25 +54,62 @@ module.exports = {
         baseEmbed = this.baseEmbed
         restart.bind(baseEmbed, client)
 
+        let commandGuildId = ctx.options.getString("guildid");
+        if (commandGuildId == "all") { commandGuildId = ["all"]; }
+        else if (commandGuildId) {
+            commandGuildId = commandGuildId.split(",");
+            commandGuildId.forEach((guild, index) => {
+                guild = guild ? guild.trim() : ""; commandGuildId[index] = guild;
+                if (!guild.match(new RegExp("^[0-9]*$", "gi"))) commandGuildId.splice(index, 1)
+                if (!client.guilds.cache.has(guild)) commandGuildId.splice(index, 1)
+            });
+            commandGuildId = [...new Set(commandGuildId)].filter(n => n);
+        } else { commandGuildId = [] }
+
         const player = client.player.players.get(ctx.guildId);
         await ctx.deferReply({ ephemeral: true });
         if (ctx.options.getString("type") == "full" || ctx.options.getString("type") == "discord") {
             restart(ctx.options.getString("type"));
-        } else if (ctx.options.getString("type") == "commandreset") {
-            await ctx.editReply({embeds: [this.baseEmbed("⏳ | Resetting Gunther's slash commands in all servers, please wait...")]});
-            await registerCommandsFromBot(client);
+        } else if (ctx.options.getString("type") == "commandreset" || ctx.options.getString("type") == "commanddelete") {
+            if (commandGuildId.length <= 0) return ctx.editReply({embeds: [this.baseEmbed('❌ | You didn\'t provided any GUILD ID or the `all` option')]});
 
-            return ctx.editReply({embeds: [this.baseEmbed('✅ | Commands reset')]});
-        } else if (ctx.options.getString("type") == "commanddelete") {
-            await ctx.editReply({embeds: [this.baseEmbed("⏳ | Clearing Gunther's slash commands in all servers but debug server, please wait...")]});
-            await client.application.commands.set([]);
-            await Promise.all(client.guilds.cache.map(async (guild) => {
-                try {
-                    if (guild.id != DEBUG_SERVER) await guild.commands.set([]);
-                } catch (e) {}
-            }));
-
-            return ctx.editReply({embeds: [this.baseEmbed('✅ | Cleared commands in all server but debug server')]});
+            if (commandGuildId[0] == "all") {
+                if (ctx.options.getString("type") == "commandreset") {
+                    await ctx.editReply({embeds: [this.baseEmbed("⏳ | Refreshing Gunther's slash commands in all servers, please wait...")]});
+                    await registerCommandsFromBot(client);
+                    return ctx.editReply({embeds: [this.baseEmbed('✅ | Commands refreshed in all servers')]});
+                } else if (ctx.options.getString("type") == "commanddelete") {
+                    await ctx.editReply({embeds: [this.baseEmbed("⏳ | Clearing Gunther's slash commands in all servers but debug server, please wait...")]});
+                    await client.application.commands.set([]);
+                    await Promise.all(client.guilds.cache.map(async (guild) => {
+                        try {
+                            if (guild.id != DEBUG_SERVER) await guild.commands.set([]);
+                        } catch (e) {}
+                    }));
+                    return ctx.editReply({embeds: [this.baseEmbed('✅ | Cleared commands in all servers but debug server')]});
+                }
+            } else {
+                if (ctx.options.getString("type") == "commandreset") {
+                    await ctx.editReply({embeds: [this.baseEmbed("⏳ | Refreshing Gunther's slash commands in the specified servers, please wait...")]});
+                    await Promise.all(commandGuildId.map(async (guildid) => {
+                        try {
+                            guild = await client.guilds.fetch(guildid);
+                            await registerCommandsFromBot(client, guild);
+                        } catch (e) {}
+                    }));
+                    return ctx.editReply({embeds: [this.baseEmbed('✅ | Commands refreshed in all the specified servers')]});
+                } else if (ctx.options.getString("type") == "commanddelete") {
+                    await ctx.editReply({embeds: [this.baseEmbed("⏳ | Clearing Gunther's slash commands in all the specified servers but debug server, please wait...")]});
+                    await client.application.commands.set([]);
+                    await Promise.all(commandGuildId.map(async (guildid) => {
+                        try {
+                            guild = await client.guilds.fetch(guildid);
+                            if (guild.id != DEBUG_SERVER) await guild.commands.set([]);
+                        } catch (e) {}
+                    }));
+                    return ctx.editReply({embeds: [this.baseEmbed('✅ | Cleared commands in all the specified servers but debug server')]});
+                }
+            }
         } else if (ctx.options.getString("type") == "simple" && player) {
             player.destroy()
             client.setClientPresence("ready");

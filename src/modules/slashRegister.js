@@ -15,6 +15,13 @@ function loadCommands() {
         for (let command of readdirSync(join(__dirname, "..", "commands", x))) {
             command = require(`../commands/${x}/${command}`)
             if (!command.availableInGuild) command.availableInGuild = VALID_SERVERS;
+            command.availableInGuild = Array.isArray(command.availableInGuild) ? command.availableInGuild : [];
+            command.availableInGuild.forEach((guild, index) => {
+                guild = guild ? guild.trim() : ""; command.availableInGuild[index] = guild;
+                if (!guild.match(new RegExp("^[0-9]*$", "gi"))) command.availableInGuild.splice(index, 1)
+            });
+            command.availableInGuild = [...new Set(command.availableInGuild)].filter(n => n);
+
             commands.set(command.name, command);
             if (Array.isArray(command.aliases)) {
                 command.aliases.forEach(alias => {
@@ -42,11 +49,11 @@ async function registerGuild(guildId, registerOrDelete) {
                 commands++
             }
         });
-        console.log(`[SLASH COMMANDS REGISTER] -> Deleted ${commands} GUILD slash commands.`);
+        console.log(`[SLASH REGISTER] -> Deleted ${commands} GUILD slash commands.`);
     } else {
         finalCommands = [];
         [...commands.values()].forEach(x => {
-            if (x.availableInGuild.includes(guildId)) finalCommands.push({
+            if (x.availableInGuild.length <= 0 || x.availableInGuild.includes(guildId)) finalCommands.push({
                 name: x.name,
                 description: x.description ? x.description : '',
                 options: x.args ? x.args : [],
@@ -60,8 +67,8 @@ async function registerGuild(guildId, registerOrDelete) {
             s: false,
             e: _.toString()
         }));
-        if (typeof s === "boolean") return console.log(`[SLASH COMMANDS REGISTER] -> There was an error while registering the slash command. ${e}`);
-        console.log(`[SLASH COMMANDS REGISTER] -> Refreshed GUILD slash command.`);
+        if (typeof s === "boolean") return console.log(`[SLASH REGISTER] -> There was an error while registering the slash command. ${e}`);
+        console.log(`[SLASH REGISTER] -> Refreshed GUILD slash command.`);
     }
 }
 
@@ -79,7 +86,7 @@ async function registerGlobal(registerOrDelete) {
                 commands++
             }
         });
-        console.log(`[SLASH COMMANDS REGISTER] -> Deleted ${commands} GLOBAL slash commands.`);
+        console.log(`[SLASH REGISTER] -> Deleted ${commands} GLOBAL slash commands.`);
     } else {
         body = {
             body: [...commands.values()].map(x => ({
@@ -96,8 +103,8 @@ async function registerGlobal(registerOrDelete) {
             s: false,
             e: _.toString()
         }));
-        if (typeof s === "boolean") return console.log(`[SLASH COMMANDS REGISTER] -> There was an error while registering the slash command. ${e}`);
-        console.log(`[SLASH COMMANDS REGISTER] -> Refreshed GLOBAL slash command. You may need a few minutes until it registered to all guilds.`);
+        if (typeof s === "boolean") return console.log(`[SLASH REGISTER] -> There was an error while registering the slash command. ${e}`);
+        console.log(`[SLASH REGISTER] -> Refreshed GLOBAL slash command. You may need a few minutes until it registered to all guilds.`);
     }
 }
 
@@ -131,7 +138,7 @@ async function registerCommandsFromBot(client, guild) {
             await registerGuild(guild.id);
             return true;
         } catch (e) {
-            console.log(`[SLASH REGISTER] -> An error occoured, probably missing the Application Commands permission.`)
+            console.log(`[SLASH REGISTER] -> An error occurred, probably missing the Application Commands permission or exceeded daily register limit.`)
             return false;
         }
     } else {
@@ -140,7 +147,7 @@ async function registerCommandsFromBot(client, guild) {
                 await guild.commands.set([]);
                 await registerGuild(guild.id);
             } catch (e) {
-                console.log(`[SLASH REGISTER] -> An error occoured, probably missing the Application Commands permission.`)
+                console.log(`[SLASH REGISTER] -> An error occurred, probably missing the Application Commands permission or exceeded daily register limit.`)
             }
         }));
     }

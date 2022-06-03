@@ -101,11 +101,11 @@ module.exports = {
             } else {
                 embedData.guildid = embedData.guildid.split(",");
                 embedData.guildid.forEach((guild, index) => {
-                    guild = guild.trim(); embedData.guildid[index] = guild;
+                    guild = guild ? guild.trim() : ""; embedData.guildid[index] = guild;
                     if (!guild.match(new RegExp("^[0-9]*$", "gi"))) embedData.guildid.splice(index, 1)
                     if (!client.guilds.cache.has(guild)) embedData.guildid.splice(index, 1)
                 });
-                embedData.guildid = [...new Set(embedData.guildid)];
+                embedData.guildid = [...new Set(embedData.guildid)].filter(n => n);
             }
 
             const embed = new EmbedBuilder()

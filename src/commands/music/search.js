@@ -55,7 +55,7 @@ module.exports = {
                         lavasfyDuration += track.duration;
                     }));
                     res.loadType = "PLAYLIST_LOADED";
-                    res.playlist = {name: lavasfyRes.playlistInfo.name, duration: lavasfyDuration};
+                    res.playlist = {name: lavasfyRes.playlistInfo.name, thumbnail: lavasfyRes.playlistInfo.thumbnail, duration: lavasfyDuration};
                 } else if (lavasfyRes.loadType.startsWith("TRACK")) {
                     let thumbnail = (lavasfyRes.tracks[0].info?.thumbnail ? lavasfyRes.tracks[0].info?.thumbnail : null);
                     let track = await TrackUtils.build(await lavasfyRes.tracks[0].resolve(), ctx.user);
@@ -76,7 +76,7 @@ module.exports = {
 
         if (res.loadType === 'LOAD_FAILED') {
             if (!player.queue.current) player.destroy();
-            return ctx.editReply({embeds: [this.baseEmbed(`💣 | Oops, an error occoured! Please try again in a few minutes.\n` + `\`\`\`${res.exception?.message ? res.exception?.message : 'No error was provided'}\`\`\``)]});
+            return ctx.editReply({embeds: [this.baseEmbed(`💣 | Oops, an error occurred! Please try again in a few minutes.\n` + `\`\`\`${res.exception?.message ? res.exception?.message : 'No error was provided'}\`\`\``)]});
         }
 
         let EMBED_COLOR = client.EMBED_COLOR();
@@ -129,12 +129,16 @@ module.exports = {
                     ]);
                     if (client.isValidHttpUrl(query)) embed.setURL(query)
 
-                for (let i = 0; i < res.tracks.length; i++) {
-                    if (res.tracks[i].thumbnail) {
-                        embed.setThumbnail(res.tracks[i].thumbnail);
-                        break;
+                    if (res.playlist.thumbnail) {
+                        embed.setThumbnail(res.playlist.thumbnail);
+                    } else {
+                        for (let i = 0; i < res.tracks.length; i++) {
+                            if (res.tracks[i].thumbnail) {
+                                embed.setThumbnail(res.tracks[i].thumbnail);
+                                break;
+                            }
+                        }
                     }
-                }
 
                 if (!player.playing && !player.paused) player.play()
                 await client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));

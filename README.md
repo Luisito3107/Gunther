@@ -125,9 +125,9 @@ This bot was made thinking of those who have little or no experience with these 
 	 - Set the icon and the username.
 	 - Take of the Token.
 	 - Enable Presence Intent and Message Content Intent.
- 3. (Optional) Obtain a Genius API Key by creating an API Client in their[Developers portal](https://genius.com/developers).
+ 3. (Optional) Obtain a Genius API Client Access Token by creating an API Client in their[Developers portal](https://genius.com/developers).
 	 - Login with your Genius account (or create one).
-	 - Take note of the API KEY.
+	 - Generate a Client Access Token and take note of it.
  4. Obtain Spotify API credentials by creating an app in their [Developers dashboard](https://developer.spotify.com/dashboard/login).
 	 - Login with your Spotify account (or create one).
 	 - Set the app name and description.
@@ -155,8 +155,8 @@ Find the `config.json.example` file and fill it with all the required informatio
       ],
       "MONGODB_URI": "Your MongoDB URI, can be empty",
       "LYRICS_ENGINE": "There are 3 options: ksoft, genius or google. Google doesn't need any API key",
+      "GENIUS_ACCESS_TOKEN": "your Genius API Access Token, can be empty depending on your engine choice.",
       "KSOFT_API_KEY": "your KSoft API key, can be empty depending on your engine choice.",
-      "GENIUS_API_KEY": "your Genius API key, can be empty depending on your engine choice.",
       "NODES": [
         {
           "HOST": "localhost",
@@ -209,4 +209,4 @@ Find the `config.json.example` file and fill it with all the required informatio
 		 - `node stop` or `pm2 stop all` to stop both
 
 # Disclaimer
-I will not be responsible for the use that is given to the services provided by Discord, Spotify, KSoft, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.
+I will not be responsible for the use that is given to the services provided by Discord, Spotify, Deezer, Apple Music, KSoft, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.

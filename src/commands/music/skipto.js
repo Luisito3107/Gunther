@@ -19,7 +19,7 @@ module.exports = {
         if (position > player.queue.size) return ctx.reply({embeds: [this.baseEmbed(`❌ | The queue only has \`${player.queue.size}\` song${player.queue.size > 1 ? 's' : ''}`)]});
 
         const {e, m} = await player.skipto(position).catch(_ => ({e: true, m: _}));
-        if (e) return ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occoured! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)], ephemeral: true});
+        if (e) return ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occurred! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)], ephemeral: true});
 
         return ctx.reply({embeds: [this.baseEmbed(`⏭️ | Skipped to a specific song`)]});
     }

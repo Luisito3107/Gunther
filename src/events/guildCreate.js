@@ -41,6 +41,6 @@ module.exports = {
         const registerCommands = await registerCommandsFromBot(client, guild);
         if (!registerCommands)
             defaultChannel.send({embeds: [new EmbedBuilder().setColor("ff0000")
-                .setDescription("💣 | An error occoured while registering slash commands. Kick and reinvite Gunther.")]});
+                .setDescription("💣 | An error occurred while registering slash commands. Kick and reinvite Gunther.")]});
     }
 };

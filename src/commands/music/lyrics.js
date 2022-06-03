@@ -30,8 +30,8 @@ module.exports = {
         await ctx.deferReply();
         await ctx.editReply({embeds: [this.baseEmbed('🔍 | Searching lyrics...')]})
 
+        let EMBED_COLOR = client.EMBED_COLOR();
         if (client.lyrics.mode == "genius") {
-            let EMBED_COLOR = client.EMBED_COLOR();
             const GeniusLogoURL = "https://images.genius.com/ba9fba1d0cdbb5e3f8218cbf779c1a49.300x300x1.jpg"; //"https://t2.genius.com/unsafe/600x600/https%3A%2F%2Fimages.genius.com%2F1d88f9c0c8623d60cf6d85ad3b38a6de.999x999x1.png"
             const lyrics = await client.lyrics.search(songTitle, true).catch(_ => true);
             delete lyrics.source;
@@ -94,11 +94,12 @@ module.exports = {
             let colors = [];
             if (lyrics.artwork) colors = palette(await pixels(lyrics.artwork).catch(_ => null)).colors;
             const embeds = this.chunkSubstr(lyrics.lyrics, 3000).map((l, i) => new EmbedBuilder()
-                .setTitle(`${lyrics.title || "Unknown"}`)
-                .setDescription(`${lyrics.artist || ""}\n\n\n${l}`)
-                .setThumbnail(lyrics.artwork || `https://i.imgur.com/E6IhRS4.png`)
-                .setColor(colors[i] || 0x23ff00)
-                .setFooter({text: `Powered by ${lyrics.source}`})
+                .setTitle(`${lyrics.title || "Unknown title"}`)
+                .setAuthor({name: `${lyrics.artist}`})
+                .setDescription(`${l}\n\n\u200B`)
+                .setThumbnail(lyrics.artwork || null)
+                .setColor(colors[i] || EMBED_COLOR)
+                .setFooter({text: `Lyrics powered by ${lyrics.source}`})
             )
     
             return new Pagination(ctx, embeds, 360 * 1000).start();

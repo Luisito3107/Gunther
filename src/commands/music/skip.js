@@ -15,7 +15,7 @@ module.exports = {
         } else {
             //if (!player.queue.length) return ctx.reply({embeds: [this.baseEmbed(`⚠️ | There are no more tracks in the queue`)]});
                 const {e, m} = await player.skip().catch(_ => ({e: true, m: _}));
-            if (e) ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occoured! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)]});
+            if (e) ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occurred! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)]});
         }
         return ctx.reply({embeds: [this.baseEmbed(`⏭️ | Skipped current song`)]});
     }

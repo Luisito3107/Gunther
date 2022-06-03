@@ -1,4 +1,4 @@
-const { LavasfyClient } = require("lavasfy");
+const { LavasfyClient } = require("./modules/customlavasfy/dist/index.js");
 const formatDuration = require('format-duration')
 const { IP_ADDR, EMBED_COLOR, HEX_TO_RGBTUPLE, GENERATE_ICON } = new (require('./modules/guntherUtils'))();
 const { DiscordTogether } = require('discord-together');
@@ -139,7 +139,7 @@ class Gunther extends Client {
         if (!TOKEN) throw new RangeError('You must include TOKEN to login either in config.json or env')
         await super.login(TOKEN)
             .then(x => {
-                console.log(chalk.magentaBright(`[INVITE] Invite your bot to a server: https://discord.com/api/oauth2/authorize?client_id=${this.user.id}&permissions=36768832&scope=bot%20applications.commands`))
+                console.log(chalk.magentaBright(`[INVITE] => Invite your bot to a server: https://discord.com/api/oauth2/authorize?client_id=${this.user.id}&permissions=36768832&scope=bot%20applications.commands`))
                 return x
             })
             .catch(err => console.log(chalk.red(err)))

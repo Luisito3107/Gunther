@@ -1,5 +1,5 @@
 const {EmbedBuilder} = require('discord.js');
-const { EMBED_COLOR } = new (require('../modules/guntherUtils'))();
+const { EMBED_COLOR, VALID_SERVERS } = new (require('../modules/guntherUtils'))();
 
 module.exports = {
     name: 'interactionCreate',
@@ -13,10 +13,24 @@ module.exports = {
         if (!command) return ctx.reply({embeds: [this.baseEmbed(`🚫 | That command is currently unavailable`)]});
 
         try {
+            // Check for invalid server
+            if (VALID_SERVERS.length) {
+                if (!(VALID_SERVERS.includes(ctx.guild.id))) {
+                    let guildName = ctx.guild.name;
+                    ctx.reply({embeds: [new EmbedBuilder().setColor(client.EMBED_COLOR())
+                        .setDescription("😝 | Nice try, little one, but this bot was not made for your server. Better luck next time!")]});
+
+                    return client.guilds.cache.get(ctx.guild.id)
+                    .leave() // Leave
+                    .then(g => client.logger.debug('GUILD', `Leaved ${guildName}, as it is not in the valid servers array`)) // Give confirmation after leaving
+                    .catch(console.error);
+                }
+            }
+
             command.execute.bind(this)(ctx, client);
         } catch (e) {
             console.error(e);
-            return ctx.reply({embeds: [this.baseEmbed(`💣 | Oops, an error occoured while executing **${command.name}**!\n\`\`\`${e ? e : 'No error was provided'}\`\`\``)]}).catch(_ => void 0);
+            return ctx.reply({embeds: [this.baseEmbed(`💣 | Oops, an error occurred while executing **${command.name}**!\n\`\`\`${e ? e : 'No error was provided'}\`\`\``)]}).catch(_ => void 0);
         }
     },
     baseEmbed(content) {

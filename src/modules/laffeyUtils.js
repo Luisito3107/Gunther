@@ -30,7 +30,7 @@ module.exports = class laffeyUtils {
     }
 
     get GENIUS_API_KEY() {
-        return process.env.GENIUS_API_KEY || config.GENIUS_API_KEY
+        return process.env.GENIUS_ACCESS_TOKEN || config.GENIUS_ACCESS_TOKEN
     }
 
     get LYRICS_ENGINE() {

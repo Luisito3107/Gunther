@@ -2,14 +2,15 @@ const config = require('../../config.json');
 
 module.exports = class guntherUtils {
     get DEBUG_SERVER() {
-        return process.env.DEBUG_SERVER ? process.env.DEBUG_SERVER : config.DEBUG_SERVER
+        return (process.env.DEBUG_SERVER ? process.env.DEBUG_SERVER : config.DEBUG_SERVER) || false
     }
 
     get VALID_SERVERS() {
-        let valid = process.env.VALID_SERVERS ? process.env.VALID_SERVERS.split(',').length ? process.env.VALID_SERVERS.split(',') : config.VALID_SERVERS : config.VALID_SERVERS
+        let valid = (process.env.VALID_SERVERS ? process.env.VALID_SERVERS.split(',').length ? process.env.VALID_SERVERS.split(',') : config.VALID_SERVERS : config.VALID_SERVERS) || []
+        valid = Array.isArray(valid) ? valid : [];
         let debug = process.env.DEBUG_SERVER ? process.env.DEBUG_SERVER : config.DEBUG_SERVER
-        if (debug) {valid.push(debug); valid = [...new Set(valid)];}
-        return valid;
+        if (debug && valid.length) {valid.push(debug); valid = [...new Set(valid)];}
+        return valid || [];
     }
     
     get IP_ADDR() {

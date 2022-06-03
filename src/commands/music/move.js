@@ -25,7 +25,7 @@ module.exports = {
 
         const {e, m} = await player.move(from, to).catch(e => ({e: true, m: e}));
 
-        if (e) ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occoured! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)], ephemeral: true});
+        if (e) ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occurred! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)], ephemeral: true});
         ctx.reply({embeds: [this.baseEmbed(`✅ | Song moved`)]});
         return client.playerHandler.savePlayer(client.player.players.get(ctx.guildId));
     }

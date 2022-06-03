@@ -3,8 +3,8 @@
   "OWNERS": [""],
   "MONGODB_URI": "",
   "LYRICS_ENGINE": "genius",
+  "GENIUS_ACCESS_TOKEN": "",
   "KSOFT_API_KEY": "",
-  "GENIUS_API_KEY": "",
   "NODES": [
     {
       "HOST": "",
