@@ -54,9 +54,9 @@ class Gunther extends Client {
                 });
                 webserver_app.listen(3000, ()=>{console.log(chalk.cyan("[DEBUG] => [WEBSERVER] Listening requests on port 3000"))});
                 /* Remove old thumbnails */
-                    /*const findRemoveSync = require('find-remove')
-                    findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 3600 }, extensions: '.jpg'});*/
-                    //setInterval(findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 3600 }, extensions: '.jpg'}), 3600000)
+                    const findRemoveSync = require('find-remove')
+                    findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 86400 }, extensions: '.jpg'});
+                    setInterval(function() {findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 86400 }, extensions: '.jpg'})}, 3600000)
             // Lavasfy
                 this.Lavasfy = new LavasfyClient({
                     clientID: SPOTIFY_CLIENT_ID,
