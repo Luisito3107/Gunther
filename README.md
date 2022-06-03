@@ -112,7 +112,7 @@ This bot was made thinking of those who have little or no experience with these 
 	 - default-jdk
  - Credentials (refer to the Obtaining credentials section)
 	 - Discord Application ID, Public Key and Bot Token.
-	 - (Optional) Genius/KSoft API Key
+	 - (Optional) Genius API Client Access Token/KSoft API Key
 	 - Spotify Client ID and Client Secret
 	 - (Optional) MongoDB URI
 
@@ -125,7 +125,7 @@ This bot was made thinking of those who have little or no experience with these 
 	 - Set the icon and the username.
 	 - Take of the Token.
 	 - Enable Presence Intent and Message Content Intent.
- 3. (Optional) Obtain a Genius API Client Access Token by creating an API Client in their[Developers portal](https://genius.com/developers).
+ 3. (Optional) Obtain a Genius API Client Access Token by creating an API Client in their [Developers portal](https://genius.com/developers).
 	 - Login with your Genius account (or create one).
 	 - Generate a Client Access Token and take note of it.
  4. Obtain Spotify API credentials by creating an app in their [Developers dashboard](https://developer.spotify.com/dashboard/login).
@@ -154,6 +154,8 @@ Find the `config.json.example` file and fill it with all the required informatio
         "Your Discord user ID, can be more than 1"
       ],
       "MONGODB_URI": "Your MongoDB URI, can be empty",
+	  "SPOTIFY_CLIENT_ID": "your Spotify Client ID",
+	  "SPOTIFY_CLIENT_SECRET": "your Spotify Client Secret",
       "LYRICS_ENGINE": "There are 3 options: ksoft, genius or google. Google doesn't need any API key",
       "GENIUS_ACCESS_TOKEN": "your Genius API Access Token, can be empty depending on your engine choice.",
       "KSOFT_API_KEY": "your KSoft API key, can be empty depending on your engine choice.",
@@ -163,8 +165,8 @@ Find the `config.json.example` file and fill it with all the required informatio
           "PASSWORD": "Your node's password",
           "PORT": 443,
           "IDENTIFIER": "This is node's identifier, it's all up to you",
-          "RETRY_AMOUNT": 3,
-          "RETRY_DELAY": 1000,
+          "RETRY_AMOUNT": 6,
+          "RETRY_DELAY": 3000,
           "SECURE": false
         }
       ],

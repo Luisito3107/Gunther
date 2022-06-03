@@ -24,7 +24,7 @@ module.exports = {
                 .setFields([
                     {name: `⌛ Duration:`, value: (player.queue.current.isStream ? "🔴 LIVE" : `\`${client.formatDuration(player.queue.current.duration)}\``), inline: true},
                     {name: `🎵 Artist(s): `, value: `\`${player.queue.current.author}\``, inline: true},
-                    {name: `▶ Play command:`, value: `\`/play ${player.queue.current.uri}\``, inline: false},
+                    {name: `▶ Play command:`, value: `\`/play song query: ${player.queue.current.uri}\``, inline: false},
                     {name: `🔎 Saved from:`, value: `<#${ctx.channelId}>`+"\n\u200B", inline: false}
                 ])
                 .setFooter({text: `Requested by ${player.queue.current.requester.tag}`, iconURL: player.queue.current.requester.displayAvatarURL({dynamic: true})})

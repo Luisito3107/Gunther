@@ -38,8 +38,8 @@ if (!nodeVersionError) {
         await delay(6000); // Time for the Lavalink server to start
 
         console.log(chalk.cyan("Starting Gunther server..."))
-        let { stdout2, stderr2 } = await exec('pm2 start gunther.js');
-        console.log(stdout2, stderr2);
+        let { stdout, stderr } = await exec('pm2 start gunther.js');
+        //console.log(stdout, stderr);
         console.log(chalk.bold.green("Done!"))
     }
     startGunther();

@@ -2,6 +2,8 @@
   "TOKEN": "",
   "OWNERS": [""],
   "MONGODB_URI": "",
+  "SPOTIFY_CLIENT_ID": "",
+  "SPOTIFY_CLIENT_SECRET": "",
   "LYRICS_ENGINE": "genius",
   "GENIUS_ACCESS_TOKEN": "",
   "KSOFT_API_KEY": "",
@@ -11,8 +13,8 @@
       "PASSWORD": "",
       "PORT": 80,
       "IDENTIFIER": "",
-      "RETRY_AMOUNT": 3,
-      "RETRY_DELAY": 1000,
+      "RETRY_AMOUNT": 6,
+      "RETRY_DELAY": 3000,
       "SECURE": false
     }
   ],
