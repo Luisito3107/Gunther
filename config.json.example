@@ -18,6 +18,7 @@
       "SECURE": false
     }
   ],
+  "AUTO_RESUME_ENABLED": true,
   "AUTO_RESUME_DELAY": 1500,
   "DEBUG": true,
   "LOG_USAGE": false,

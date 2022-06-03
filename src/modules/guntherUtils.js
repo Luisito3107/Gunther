@@ -1,6 +1,10 @@
 const config = require('../../config.json');
 
 module.exports = class guntherUtils {
+    get AUTO_RESUME_ENABLED() {
+        return (process.env.AUTO_RESUME_ENABLED ? process.env.AUTO_RESUME_ENABLED : config.AUTO_RESUME_ENABLED) || false
+    }
+
     get DEBUG_SERVER() {
         return (process.env.DEBUG_SERVER ? process.env.DEBUG_SERVER : config.DEBUG_SERVER) || false
     }

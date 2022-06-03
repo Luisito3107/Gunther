@@ -1,6 +1,6 @@
 const { LavasfyClient } = require("./modules/customlavasfy/dist/index.js");
 const formatDuration = require('format-duration')
-const { IP_ADDR, EMBED_COLOR, HEX_TO_RGBTUPLE, GENERATE_ICON } = new (require('./modules/guntherUtils'))();
+const { AUTO_RESUME_ENABLED, IP_ADDR, EMBED_COLOR, HEX_TO_RGBTUPLE, GENERATE_ICON } = new (require('./modules/guntherUtils'))();
 const { DiscordTogether } = require('discord-together');
 
 const {Client, Collection} = require('discord.js');
@@ -72,6 +72,7 @@ class Gunther extends Client {
                     secure: NODES[0].SECURE,
                 }]);
             // Variables
+                this.AUTO_RESUME_ENABLED = AUTO_RESUME_ENABLED;
                 this.EMBED_COLOR = EMBED_COLOR;
                 this.HEX_TO_RGBTUPLE = HEX_TO_RGBTUPLE;
                 this.assetsURL = "http://"+IP_ADDR+":3000/assets";

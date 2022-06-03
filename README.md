@@ -170,6 +170,7 @@ Find the `config.json.example` file and fill it with all the required informatio
           "SECURE": false
         }
       ],
+	  "AUTO_RESUME_ENABLED": true,
       "AUTO_RESUME_DELAY": 1500,
       "DEBUG": true,
       "LOG_USAGE": false,

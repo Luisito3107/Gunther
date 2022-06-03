@@ -32,7 +32,7 @@ class lavalink extends Manager {
             client.setClientPresence("ready");
         })
 
-        //this.once('nodeConnect', () => client.playerHandler.autoResume())
+        if (client.AUTO_RESUME_ENABLED) this.once('nodeConnect', () => client.playerHandler.autoResume())
 
         this.on('nodeError', (node, error) => {
             console.log(chalk.red(`[LAVALINK] => [STATUS] ${node.options.identifier} encountered an error. Message: ${error.message ? error.message : 'No message'} | ${error.name} | ${error.stack}`))
