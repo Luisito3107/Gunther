@@ -18,7 +18,7 @@ module.exports = {
         if (!authorize) return ctx.reply({embeds: [this.baseEmbed('🛑 | You don\'t have permission to run this command')]});
         let code = ctx.options.getString("code");
 
-        await ctx.deferReply({ ephemeral: true });
+        await ctx.deferReply();
         try {
             let evalResult = eval(code);
             let type = evalResult

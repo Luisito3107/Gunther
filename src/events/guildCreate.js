@@ -1,4 +1,4 @@
-const { VALID_SERVERS } = new (require('../modules/guntherUtils'))();
+const { AUTO_SET_BOTINFO_ONSTART, VALID_SERVERS } = new (require('../modules/guntherUtils'))();
 const {EmbedBuilder} = require('discord.js');
 
 module.exports = {
@@ -24,6 +24,12 @@ module.exports = {
                 .then(g => client.logger.debug('GUILD', `Leaved ${guild.name}, as it is not in the valid servers array`)) // Give confirmation after leaving
                 .catch(console.error);
             }
+        }
+
+        if (AUTO_SET_BOTINFO_ONSTART) {
+            try {
+                await guild.members.me.setNickname("Gunther");
+            } catch (e) {}
         }
 
         let intro = new EmbedBuilder()

@@ -1,6 +1,7 @@
 {
   "TOKEN": "",
   "OWNERS": [""],
+  "AUTO_SET_BOTINFO_ONSTART": true,
   "MONGODB_URI": "",
   "SPOTIFY_CLIENT_ID": "",
   "SPOTIFY_CLIENT_SECRET": "",

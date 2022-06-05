@@ -155,6 +155,7 @@ Find the `config.json.example` file and fill it with all the required informatio
       "OWNERS": [
         "Your Discord user ID, can be more than 1"
       ],
+  	  "AUTO_SET_BOTINFO_ONSTART": true,
       "MONGODB_URI": "Your MongoDB URI, can be empty",
 	  "SPOTIFY_CLIENT_ID": "your Spotify Client ID",
 	  "SPOTIFY_CLIENT_SECRET": "your Spotify Client Secret",

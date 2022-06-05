@@ -1,6 +1,10 @@
 const config = require('../../config.json');
 
 module.exports = class guntherUtils {
+    get AUTO_SET_BOTINFO_ONSTART() {
+        return (process.env.AUTO_SET_BOTINFO_ONSTART ? process.env.AUTO_SET_BOTINFO_ONSTART : config.AUTO_SET_BOTINFO_ONSTART) || false
+    }
+
     get AUTO_RESUME_ENABLED() {
         return (process.env.AUTO_RESUME_ENABLED ? process.env.AUTO_RESUME_ENABLED : config.AUTO_RESUME_ENABLED) || false
     }
