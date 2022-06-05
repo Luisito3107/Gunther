@@ -197,6 +197,7 @@ class lavalink extends Manager {
             }
             client.setClientPresence("ready");
             channel.send({embeds: [noQueueEmbed]}).catch(_ => void 0);
+            client.playerHandler.savePlayer(player);
             setTimeout(() => {
                 const e = client.player.players.get(player.guild)
                 if (e && !e.queue.current) {
@@ -206,7 +207,7 @@ class lavalink extends Manager {
                         .setAuthor({name: "I had to go", iconURL: client.assetsURL_icons+"/bye.png?color="+EMBED_COLOR.replace("#", "")})
                         .setColor(EMBED_COLOR)
                         .setDescription(`I had to leave the voice channel due to inactivity, but you can make me play music whenever you want with the \`play\` command!`);
-                    channel.send({embed: leftEmbed}).catch(_ => void 0);
+                    channel.send({embeds: [leftEmbed]}).catch(_ => void 0);
                 }
             }, 60 * 1000);
         })

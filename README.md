@@ -22,6 +22,8 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - *Apple Music*
 	 - *HTTP URLs*
 	 - *Local file (Discord attachment, metadata tags supported)*
+		- File types: MP3, MP4, FLAC, WAV, AAC and OGG
+		- Tag formats: ID3 (most common), APE, ASF, EXIF 2.3, iTunes, RIFF, Vorbis comment
  - Support for all Discord Activities (some may require the server to have Nitro)
 	 - *YouTube Together*
 	 - *Poker night*

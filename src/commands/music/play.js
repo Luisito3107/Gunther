@@ -57,7 +57,7 @@ module.exports = {
             if (subcommand == "file") {
                 attachment = ctx.options.getAttachment("attachment");
                 let fileformat = attachment.name.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
-                const allowedFileFormats = ["mp3", "aac", "ogg", "flac", "wma", "mp4"];
+                const allowedFileFormats = ["mp3", "mp4", "flac", "wav", "aac", "ogg"];
                 if (allowedFileFormats.indexOf(fileformat) == -1)
                     return ctx.reply({embeds: [this.baseEmbed(`❌ | File format not allowed. Allowed formats: \`${allowedFileFormats.join(", ")}\``)], ephemeral: true});
 
@@ -147,6 +147,7 @@ module.exports = {
                     if (attachment && typeof metadata != "undefined") {
                         let picture = (metadata?.common?.picture?.length ? metadata?.common?.picture[0] : null);
                         if (picture) {
+                            client.createThumbnailsFolder();
                             let thumbnailLocation = "/img/thumbnails/"+new Date().getTime()+".jpg";
                             await require('sharp')(picture.data).resize(640, 640).toFormat('jpg').toFile(process.cwd()+"/src/assets/"+thumbnailLocation, (err, info) => { if (err) { thumbnailLocation = false; } })
                             if (thumbnailLocation) { res.tracks[0].thumbnail = client.assetsURL+thumbnailLocation; }

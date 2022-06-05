@@ -38,25 +38,6 @@ class Gunther extends Client {
         this.owners = OWNERS;
 
         // Gunther custom
-            // Web server
-                var webserver_path = require('path');
-                var webserver_express = require('express');
-                var webserver_app = webserver_express();
-                var dir = webserver_path.join(__dirname, 'assets');
-                webserver_app.all('/', (req, res) => { res.send('Gunther is alive!'); });
-                webserver_app.get("/assets/img/icons/:name", function(req, res) { GENERATE_ICON(EMBED_COLOR, req, res); });
-                webserver_app.get("/assets/img/thumbnails/:pic", function(req, res) {
-                    const thumbnailPath = process.cwd()+"/src/assets/img/thumbnails/"+req.params.pic;
-                    try {
-                        if (require('fs').existsSync(thumbnailPath)) { res.sendFile(thumbnailPath); }
-                        else { res.writeHead(404); res.end(); }
-                    } catch(error) { res.writeHead(500); res.end(); console.log(error); }
-                });
-                webserver_app.listen(3000, ()=>{console.log(chalk.cyan("[DEBUG] => [WEBSERVER] Listening requests on port 3000"))});
-                /* Remove old thumbnails */
-                    const findRemoveSync = require('find-remove')
-                    findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 86400 }, extensions: '.jpg'});
-                    setInterval(function() {findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 86400 }, extensions: '.jpg'})}, 3600000)
             // Lavasfy
                 this.Lavasfy = new LavasfyClient({
                     clientID: SPOTIFY_CLIENT_ID,
@@ -113,6 +94,31 @@ class Gunther extends Client {
                     try { url = new URL(string); } catch (_) { return false; }
                     return url.protocol === "http:" || url.protocol === "https:";
                 }
+                this.createThumbnailsFolder = function() {
+                    const fs = require('fs');
+                    const thumbnailsURL = process.cwd()+"/src/assets/img/thumbnails";
+                    if (!fs.existsSync(thumbnailsURL)){ fs.mkdirSync(thumbnailsURL, { recursive: true }); }
+                }
+            // Web server
+                var webserver_path = require('path');
+                var webserver_express = require('express');
+                var webserver_app = webserver_express();
+                var dir = webserver_path.join(__dirname, 'assets');
+                this.createThumbnailsFolder();
+                webserver_app.all('/', (req, res) => { res.send('Gunther is alive!'); });
+                webserver_app.get("/assets/img/icons/:name", function(req, res) { GENERATE_ICON(EMBED_COLOR, req, res); });
+                webserver_app.get("/assets/img/thumbnails/:pic", function(req, res) {
+                    const thumbnailPath = process.cwd()+"/src/assets/img/thumbnails/"+req.params.pic;
+                    try {
+                        if (require('fs').existsSync(thumbnailPath)) { res.sendFile(thumbnailPath); }
+                        else { res.writeHead(404); res.end(); }
+                    } catch(error) { res.writeHead(500); res.end(); console.log(error); }
+                });
+                webserver_app.listen(3000, ()=>{console.log(chalk.cyan("[DEBUG] => [WEBSERVER] Listening requests on port 3000"))});
+                /* Remove old thumbnails */
+                    const findRemoveSync = require('find-remove')
+                    findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 43200 }, extensions: '.jpg'});
+                    setInterval(function() {findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 43200 }, extensions: '.jpg'})}, 3600000)
 
         // Collect needed data to client //
         new eventHandler(this).start();
