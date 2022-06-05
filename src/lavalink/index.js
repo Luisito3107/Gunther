@@ -112,8 +112,8 @@ class lavalink extends Manager {
                     .setThumbnail(track?.thumbnail ? track?.thumbnail : null)
                     .setFields([
                         { name: (track.author.split(",").length > 1 ? "Artists" : "Artist"), value: track.author, inline: true },
-                        { name: "Requested by", value: `${track.requester}`, inline: true },
-                        { name: "Duration", value: `${track.isStream ? "🔴 LIVE" : client.formatDuration(track.duration)}`, inline: true }
+                        { name: "Duration", value: `${track.isStream ? "🔴 LIVE" : client.formatDuration(track.duration)}`, inline: true },
+                        { name: "Requested by", value: `${track.requester}`, inline: true }
                     ]);
             } else {
                 presenceData = "some music";

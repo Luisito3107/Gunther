@@ -119,7 +119,7 @@ module.exports = {
                     .setFields([
                         {name: (res.tracks[0].author.split(",").length > 1 ? "Artists" : "Artist"), value: res.tracks[0].author, inline: true},
                         {name: "Duration", value: duration, inline: true},
-                        {name: "Queue position", value: `\`${player.queue.size}\``, inline: true}
+                        //{name: "Queue position", value: `\`${player.queue.size}\``, inline: true}
                     ]);
     
                 if (res.tracks[0].thumbnail) embed.setThumbnail(res.tracks[0].thumbnail);
@@ -168,7 +168,7 @@ module.exports = {
                     .setFields([
                         {name: "Tracks", value: String(res.tracks.length), inline: true},
                         {name: "Duration", value: duration, inline: true},
-                        {name: "Queue position", value: `\`${Math.max(player.queue.size-res.tracks.length, 0)}\``, inline: true}
+                        //{name: "Queue position", value: `\`${Math.max(player.queue.size-res.tracks.length, 0)}\``, inline: true}
                     ]);
                     if (client.isValidHttpUrl(query)) embed.setURL(query)
 
