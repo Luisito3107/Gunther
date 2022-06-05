@@ -29,7 +29,7 @@ module.exports = {
         let intro = new EmbedBuilder()
             .setTitle('**Hey, hi, hello!**')
             .setDescription(
-                `Thank you for inviting me to your server. As you may have noticed, my name is **Gunther** (not Gunter 🤫), and I am a bot created for *Tomemos el té* and *Los weones* by <@546441136479404052>, as a replacement for the beloved Groovy bot.\n\n`+
+                `Thank you for inviting me to your server. As you may have noticed, my name is **Gunther** (not Gunter 🤫), and I am a bot created by <@546441136479404052>, as a replacement for the beloved Groovy bot.\n\n`+
                 `This bot now works only with slash (/) commands. Start with the \`help\` command, to give you an idea of everything I can do, we are going to have a great time!`
             )
             .setColor("#09b9fa")
