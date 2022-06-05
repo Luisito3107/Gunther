@@ -183,31 +183,7 @@ module.exports = {
                 let track = res.tracks[response.values[0]]
                 player.queue.add(track);
                 if (!player.playing && !player.paused) player.play();
-                return ctx.editReply({embeds: [prepareQueueEmbed()]});
-
-                return false;
-
-                /*let randomNumber = `${Math.round(Math.random() * 1000)}`
-                let row = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId(randomNumber));
-                let tracks = res.tracks;
-
-                for (let d of res.tracks.map((x, i) => ({
-                    label: `${i + 1} - ${x.title.length > 50 ? x.title.substr(0, 47) : x.title}`,
-                    value: `${i}`
-                }))) row.components[0].addOptions(d);
-
-                let message = await ctx.editReply({content: `Select track below`, components: [row]});
-
-                let response = await message.awaitMessageComponent({
-                    filter: (i) => i.deferUpdate().catch(_ => void 0) && i.customId === randomNumber && i.user.id === ctx.user.id,
-                    time: 15 * 1000
-                }).catch(_ => true);
-
-                if (typeof response === "boolean") return message.edit({content: `No response...`, components: []});
-                let track = tracks[response.values[0]]
-                player.queue.add(track);
-                if (!player.playing && !player.paused) player.play();
-                return ctx.editReply({embeds: [this.baseEmbed(`Force played ${track.title} [${!track.isStream ? `${new Date(track.duration).toISOString().slice(11, 19)}` : '◉ LIVE'}]`)]});*/
+                return ctx.editReply({embeds: [prepareQueueEmbed(track)]});
             }
         }
     }
