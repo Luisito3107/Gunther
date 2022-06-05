@@ -26,7 +26,7 @@ module.exports = {
         embed.bind(client, EMBED_COLOR)
 
         if (ctx.options.getString("type") == "adv") {
-            await ctx.deferReply({ ephemeral: true });
+            await ctx.deferReply();
             const memusage = process.memoryUsage();
             const cs = cpus();
             
@@ -110,7 +110,7 @@ module.exports = {
                 `Uptime          :: ${prettyMs(client.uptime)}\n` +
                 `\n` + `\`\`\``);
 
-            return ctx.reply({embeds: [statsEmbed], ephemeral: true});
+            return ctx.reply({embeds: [statsEmbed]});
         }
     }
 }
