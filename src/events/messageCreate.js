@@ -22,6 +22,9 @@ module.exports = {
             }
         }
 
+        // Check for nickname changes
+        client.checkForNickname(message.guild.members.me, undefined, message);
+
         // Check for prefix commands
         if (message.content.startsWith(PREFIX)) {
             message.channel.send({embeds: [new EmbedBuilder().setColor(client.EMBED_COLOR())

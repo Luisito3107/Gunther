@@ -3,7 +3,7 @@ const formatDuration = require('format-duration')
 const { AUTO_RESUME_ENABLED, IP_ADDR, EMBED_COLOR, HEX_TO_RGBTUPLE, GENERATE_ICON } = new (require('./modules/guntherUtils'))();
 const { DiscordTogether } = require('discord-together');
 
-const {Client, Collection} = require('discord.js');
+const {Client, Collection, EmbedBuilder} = require('discord.js');
 const {TOKEN, MONGODB_URI, OWNERS, LYRICS_ENGINE, NODES, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET} = new (require('./modules/laffeyUtils'))();
 const eventHandler = require('./modules/eventHandler');
 const playerHandler = require('./modules/playerHandler');
@@ -86,6 +86,30 @@ class Gunther extends Client {
                             break;
                         default:
                             break;
+                    }
+                }
+                this.checkForNickname = async function(newMember, ctx, message) {
+                    let currentNickname = (newMember.nickname || "Gunther").toLowerCase();
+                    if (currentNickname.replaceAll(" ", "").replaceAll("gunther", "").length > 5 || currentNickname.indexOf("gunther") < 0) {
+                        await newMember.setNickname("Gunther");
+                        const nicknameEmbed = new EmbedBuilder().setColor(EMBED_COLOR())
+                            .setDescription("😶 | I'm sorry, but I think I'd rather just be called Gunther!");
+                        if (ctx) {
+                            return ctx.channel.send({embeds: [nicknameEmbed]});
+                        } else {
+                            let channel;
+                            if (message) channel = message.channel;
+                            else {
+                                let defaultChannel = "";
+                                await Promise.all(newMember.guild.channels.cache.map(async (channel) => {
+                                    if(channel.type == 0 && defaultChannel == "") {
+                                        if (channel.permissionsFor(newMember).has(["SendMessages"])) { defaultChannel = channel; }
+                                    }
+                                }));
+                                channel = defaultChannel;
+                            }
+                            return channel ? channel.send({embeds: [nicknameEmbed]}) : false;
+                        }
                     }
                 }
                 this.discordTogether = new DiscordTogether(this);

@@ -27,6 +27,9 @@ module.exports = {
                 }
             }
 
+            // Check for nickname changes
+            client.checkForNickname(ctx.guild.members.me, ctx);
+
             command.execute.bind(this)(ctx, client);
         } catch (e) {
             console.error(e);
