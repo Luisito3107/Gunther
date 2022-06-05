@@ -143,7 +143,7 @@ module.exports = {
                     .setFields([
                         {name: "Speed", value: `${Math.round(player.speed * 100) / 100}x`, inline: true},
                         {name: "Pitch", value: `${Math.round(player.pitch * 100) / 100}x`, inline: true},
-                        {name: "Bassboost", value: `${player.bassboost ? `${player.bassboost * 100}%` : 'Disabled'}`, inline: true},
+                        {name: "Bass boost", value: `${player.bassboost ? `${player.bassboost * 100}%` : 'Disabled'}`, inline: true},
                         {name: "Karaoke", value: `${player.karaoke ? 'Enabled' : 'Disabled'}`, inline: true},
                         {name: "8D", value: `${player._8d ? 'Enabled' : 'Disabled'}`, inline: true},
                         {name: "Nightcore", value: `${player.nightcore ? 'Enabled' : 'Disabled'}`, inline: true},
