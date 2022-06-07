@@ -63,6 +63,7 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 ![Lyrics](https://i.ibb.co/Dz5NBs7/gunther2.png)
 ![Filters](https://i.ibb.co/TrXCCQ2/gunther3.png)
 ![Detailed help and queue finished](https://i.ibb.co/GsLF2HV/gunther4.png)
+![Autoplay](https://i.ibb.co/JpzPN8Q/gunther5.png)
 
 ## Commands
  - **Tools and information**
@@ -72,7 +73,7 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - `/invite` - Gives you a link to invite this bot to other servers
 	 - `/ping` - Check bot's server latency in ms
 	 - `/restart [ type ]` - Restarts the core of Gunther
-	 - `/sendembed < guildid > < title > < description > [ color ] [ authorname ] [ authorurl ] [ authorimageurl ] [ thumbnailurl ] [ imageurl ] [ footertext ] [ footerimageurl ] [ settimestamp ] [ preview ]` - Sends a embed (message) to one or all the servers Gunther is in
+	 - `/sendembed < guildid > < title > < description > [ url ] [ color ] [ authorname ] [ authorurl ] [ authorimageurl ] [ thumbnailurl ] [ imageurl ] [ footertext ] [ footerimageurl ] [ settimestamp ] [ preview ]` - Sends a embed (message) to one or all the servers Gunther is in
 	 - `/stats [ type ]` - Get bot statitics and metrics
 	 - `/youtube` - Starts a YouTube Together session
 	

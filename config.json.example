@@ -1,14 +1,14 @@
 {
-	"TOKEN": "",
-	"OWNERS": [""],
-	"AUTO_SET_BOTINFO_ONSTART": true,
-	"MONGODB_URI": "",
-	"SPOTIFY_CLIENT_ID": "",
-	"SPOTIFY_CLIENT_SECRET": "",
-	"LYRICS_ENGINE": "genius",
-	"GENIUS_ACCESS_TOKEN": "",
-	"NODES": [
-		{
+    "TOKEN": "",
+    "OWNERS": [""],
+    "AUTO_SET_BOTINFO_ONSTART": true,
+    "MONGODB_URI": "",
+    "SPOTIFY_CLIENT_ID": "",
+    "SPOTIFY_CLIENT_SECRET": "",
+    "LYRICS_ENGINE": "genius",
+    "GENIUS_ACCESS_TOKEN": "",
+    "NODES": [
+        {
             "HOST": "",
             "PASSWORD": "",
             "PORT": 80,
@@ -16,17 +16,17 @@
             "RETRY_AMOUNT": 6,
             "RETRY_DELAY": 3000,
             "SECURE": false
-		}
-	],
-	"AUTO_RESUME_ENABLED": true,
-	"AUTO_RESUME_DELAY": 1500,
-	"_24H_COMMAND_ENABLED": false,
+        }
+    ],
+    "AUTO_RESUME_ENABLED": true,
+    "AUTO_RESUME_DELAY": 1500,
+    "_24H_COMMAND_ENABLED": false,
     "ONLY_OWNERS_CAN_INVITE": false,
-	"DEBUG": true,
-	"LOG_USAGE": false,
-	"PUBLIC_IPADDR": false,
-	"NETWORK_DEV": "eth0",
-	"NETWORK_DEV_INDEX": 0,
-	"DEBUG_SERVER": "",
-	"VALID_SERVERS": ["", ""]
+    "DEBUG": true,
+    "LOG_USAGE": false,
+    "PUBLIC_IPADDR": false,
+    "NETWORK_DEV": "eth0",
+    "NETWORK_DEV_INDEX": 0,
+    "DEBUG_SERVER": "",
+    "VALID_SERVERS": ["", ""]
 }
