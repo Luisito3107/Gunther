@@ -32,25 +32,25 @@ module.exports = {
                 `\n`+ (() => {
                     const info = d.filter(x => !!x).map((track) => {
                         let trackTitle = track?.title.length >= 45 ? `${track?.title.slice(0, 45)}...` : track?.title
-                        return `\`${++j}.\` [${track.title}](${track.uri}) \n\`${(track.isStream ? '🔴 LIVE' : client.formatDuration(track.duration))}\` **|** Requested by: ${track.requester}\n`
-                        //return `${++j} - ${trackTitle}${' '.repeat((48 - (trackTitle.length)))} ${track.isStream ? '◉ LIVE' : ((track.duration || !isNaN(track.duration)) ? new Date(parseInt(track.duration)).toISOString().slice(11, 19) : 'Unknown')}`
+                        return `\`${++j}.\` [${track.title}](${track.uri}) \n${track.author ? track.author : "Unknown artist(s)"} **|** \`${(track.isStream ? '🔴 LIVE' : client.formatDuration(track.duration))}\` \nRequested by: ${track.requester}\n`
                     }).join("\n");
 
                     return `${realQueueEmbedDescription()}` +
-                        `${info ? `\n\n**Up next:**\n ${info}` : 'Not detected'}\n`
+                        `${info ? `\n\n**Up next (${player.queue.length} songs):**\n ${info}` : 'Not detected'}\n`
 
                 })()
-                : `\n\nThere are no more tracks left in the queue!` +
-                `Add more songs using the \`play\` command!`+"\n\u200B"
+                : `\n\n**Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
+                `Add more songs using the \`play\` command!`
             )
         )
         if (!embeds.length) embeds = [new EmbedBuilder()
             .setAuthor({name: `Player queue`, iconURL: client.assetsURL_icons+"/queue.png?color="+EMBED_COLOR.replace("#", "")})
             .setColor(EMBED_COLOR)
-            .setDescription(`${realQueueEmbedDescription()}\n\n Add more songs using the \`play\` command!\n`)
+            .setDescription(`${realQueueEmbedDescription()}\n\n**Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
+            `Add more songs using the \`play\` command!`)
         ]
 
         await ctx.deferReply();
-        return (embeds.length > 1 ? new Pagination(ctx, embeds, 360 * 1000).start() : ctx.editReply({embeds: [embeds[0]]}));
+        return new Pagination(ctx, embeds, 360 * 1000).start()
     }
 }

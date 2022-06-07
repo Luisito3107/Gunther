@@ -14,21 +14,25 @@ function loadCommands() {
     for (const x of readdirSync(join(__dirname, "..", "commands"))) {
         for (let command of readdirSync(join(__dirname, "..", "commands", x))) {
             command = require(`../commands/${x}/${command}`)
-            if (!command.availableInGuild) command.availableInGuild = VALID_SERVERS;
-            command.availableInGuild = Array.isArray(command.availableInGuild) ? command.availableInGuild : [];
-            command.availableInGuild.forEach((guild, index) => {
-                guild = guild ? guild.trim() : ""; command.availableInGuild[index] = guild;
-                if (!guild.match(new RegExp("^[0-9]*$", "gi"))) command.availableInGuild.splice(index, 1)
-            });
-            command.availableInGuild = [...new Set(command.availableInGuild)].filter(n => n);
+            command.enabled = (command.enabled == undefined ? true : command.enabled);
 
-            commands.set(command.name, command);
-            if (Array.isArray(command.aliases)) {
-                command.aliases.forEach(alias => {
-                    aliasCmd = {...command};
-                    aliasCmd.name = alias;
-                    commands.set(aliasCmd.name, aliasCmd);
+            if (command.enabled) {
+                if (!command.availableInGuild) command.availableInGuild = VALID_SERVERS;
+                command.availableInGuild = Array.isArray(command.availableInGuild) ? command.availableInGuild : [];
+                command.availableInGuild.forEach((guild, index) => {
+                    guild = guild ? guild.trim() : ""; command.availableInGuild[index] = guild;
+                    if (!guild.match(new RegExp("^[0-9]*$", "gi"))) command.availableInGuild.splice(index, 1)
                 });
+                command.availableInGuild = [...new Set(command.availableInGuild)].filter(n => n);
+
+                commands.set(command.name, command);
+                if (Array.isArray(command.aliases)) {
+                    command.aliases.forEach(alias => {
+                        aliasCmd = {...command};
+                        aliasCmd.name = alias;
+                        commands.set(aliasCmd.name, aliasCmd);
+                    });
+                }
             }
         }
     }

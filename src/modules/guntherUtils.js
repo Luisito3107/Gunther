@@ -1,6 +1,14 @@
 const config = require('../../config.json');
 
 module.exports = class guntherUtils {
+    get _24H_COMMAND_ENABLED() {
+        return (process.env._24H_COMMAND_ENABLED ? process.env._24H_COMMAND_ENABLED : config._24H_COMMAND_ENABLED) || false
+    }
+    
+    get ONLY_OWNERS_CAN_INVITE() {
+        return (process.env.ONLY_OWNERS_CAN_INVITE ? process.env.ONLY_OWNERS_CAN_INVITE : config.ONLY_OWNERS_CAN_INVITE) || false
+    }
+    
     get AUTO_SET_BOTINFO_ONSTART() {
         return (process.env.AUTO_SET_BOTINFO_ONSTART ? process.env.AUTO_SET_BOTINFO_ONSTART : config.AUTO_SET_BOTINFO_ONSTART) || false
     }

@@ -22,6 +22,11 @@ module.exports = {
         "type": 3,
         "required": true
     }, {
+        "name": "url",
+        "description": "URL of the embed",
+        "type": 3,
+        "required": false
+    }, {
         "name": "color",
         "description": "Color of the embed",
         "type": 3,
@@ -89,6 +94,7 @@ module.exports = {
                 if (embedData.authorimageurl.split("icon ")[0] == "") embedData.authorimageurl = client.assetsURL_icons+"/"+embedData.authorimageurl.split("icon")[1].trim()+".png?color="+embedData.color.replace("#", "")
                 else embedData.authorimageurl = embedData.authorimageurl ? (client.isValidHttpUrl(embedData.authorimageurl) ? embedData.authorimageurl : null) : null;
             }
+            embedData.url = embedData.url ? (client.isValidHttpUrl(embedData.url) ? embedData.url : null) : null;
             embedData.thumbnailurl = embedData.thumbnailurl ? (client.isValidHttpUrl(embedData.thumbnailurl) ? embedData.thumbnailurl : null) : null;
             embedData.imageurl = embedData.imageurl ? (client.isValidHttpUrl(embedData.imageurl) ? embedData.imageurl : null) : null;
             embedData.footerimageurl = embedData.footerimageurl ? (client.isValidHttpUrl(embedData.footerimageurl) ? embedData.footerimageurl : null) : null;
@@ -110,7 +116,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setTitle(embedData.title)
-                .setDescription(embedData.description.replaceAll("\\n", "\n"))
+                .setDescription(embedData.description.replaceAll("\\n", "\n").replaceAll("\\u200b", "\u200b"))
                 .setColor(embedData.color)
 
             if (embedData.authorname) {
@@ -120,6 +126,7 @@ module.exports = {
                 embed.setAuthor(authordata);
             }
 
+            if (embedData.url) embed.setURL(embedData.url);
             if (embedData.thumbnailurl) embed.setThumbnail(embedData.thumbnailurl);
             if (embedData.imageurl) embed.setImage(embedData.imageurl);
             if (embedData.settimestamp) embed.setTimestamp()

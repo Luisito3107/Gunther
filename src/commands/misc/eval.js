@@ -20,7 +20,7 @@ module.exports = {
 
         await ctx.deferReply();
         try {
-            let evalResult = eval(code);
+            let evalResult = await eval(code);
             let type = evalResult
             if (typeof evalResult !== "string") evalResult = inspect(evalResult);
 

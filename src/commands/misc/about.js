@@ -11,6 +11,7 @@ module.exports = {
             .setAuthor({name: "Information about Gunther", iconURL: client.assetsURL_icons+"/info.png?color="+EMBED_COLOR.replace("#", "")})
             .setColor(EMBED_COLOR)
             .setFields([
+                { name: "Version", value: `\`${require('../../../package.json').version}\``, inline: true },
                 { name: "Created by", value: '<@546441136479404052>', inline: true },
                 { name: "Libraries used", value: '[discord.js](https://discord.js.org/), [erela.js](https://github.com/MenuDocs/erela.js), [lavasfy](https://github.com/Allvaa/lava-spotify), [genius-lyrics](https://genius-lyrics.js.org/) and more...', inline: true },
                 { name: "Registered services", value: '[Genius API](https://genius.com/developers)\n[Spotify Web API](https://developer.spotify.com/documentation/web-api/)\n[MongoDB Atlas](https://www.mongodb.com/atlas/database)', inline: true },

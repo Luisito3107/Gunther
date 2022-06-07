@@ -11,7 +11,8 @@ module.exports = {
         if (player.get("nowplaying")) {
             clearInterval(player.get("nowplaying"));
             player.get("nowplayingMSG").delete().catch(_ => void 0);
-        } 
+        }
+        if (player.get('message')) player.get('message').delete().catch(_ => void 0);
 
         await ctx.deferReply();
         try {
@@ -26,14 +27,20 @@ module.exports = {
                 .setURL(p.queue.current.uri)
                 .setThumbnail(p.queue.current.thumbnail || null)
                 .setDescription(
-                    `**Requested by: ** ${p.queue.current.requester}\n\n`+
+                    /*`**Artists: ** ${p.queue.current.author}\n`+
+                    `**Requested by: ** ${p.queue.current.requester}\n\n`+*/
                     (p.queue.current.isStream ? '🔴 LIVE' :
                         `\`${client.formatDuration(p.position)}\` `+
                         splitBar(l ? Number(l) : 1, n ? Number(n) : 2, 16, '━', '🔵')[0]+
                         ` \`${client.formatDuration(p.queue.current.duration)}\``
-                    )
+                        +`\n\`${client.formatDuration(l - n)}\` left`
+                    )+"\n\u200b"
                 )
-                .setFooter({text: `${(!p.queue.current.isStream ? client.formatDuration(l - n) + ' left' : '&nbsp;')}`})
+                .setFields([
+                    { name: (p.queue.current.author.split(",").length > 1 ? "Artists" : "Artist"), value: p.queue.current.author, inline: true },
+                    { name: "Requested by", value: `${p.queue.current.requester}`, inline: true }
+                ])
+                .setFooter({text: (p.queueRepeat || p.trackRepeat) ? `${p.queueRepeat ? "🔁 Queue" : "🔂 Track"} loop is enabled. You can disable it with /loop command.` : null})
 
             ctx.editReply({embeds: [embed(player, musicLength, nowTime)]}).then(m => player.set("nowplayingMSG", m));
 

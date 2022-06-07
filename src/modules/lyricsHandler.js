@@ -6,6 +6,10 @@ const lyricsFinder = require('lyrics-finder');
 module.exports = class laffeyLyrics {
     constructor(client, mode) {
         if (!mode || typeof mode !== 'string' || !['ksoft', 'genius', 'google'].includes(mode)) throw new Error("Invalid lyrics mode type. Received " + mode);
+        if (mode == "ksoft") {
+            this.client.logger.debug("LYRICS", `KSoft lyrics engine is now unsupported.`);
+            mode = "google";
+        }
         this.mode = mode;
         this.client = client;
         this.client.logger.debug("LYRICS", `Now using ${mode} for the lyrics engine.`)

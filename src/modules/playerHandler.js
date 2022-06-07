@@ -1,5 +1,6 @@
 const {TrackUtils} = require('erela.js');
 const autoResume = require('../schemas/autoResume');
+const guildOptions = require('../schemas/guildOptions');
 const chalk = require("chalk");
 const {AUTO_RESUME_DELAY} = new (require('../modules/laffeyUtils'))();
 const { generate } = require('shortid');
@@ -16,6 +17,7 @@ module.exports = class LaffeyPlayerHandler {
         console.log(chalk.yellow(`[LAVALINK] => [AUTO RESUME] Collecting player data`))
         const queues = await autoResume.find()
         console.log(chalk.greenBright(`[LAVALINK] => [AUTO RESUME] found ${queues.length ? `${queues.length} queue${queues.length > 1 ? 's' : ''}. Resuming all queue` : '0 queue'}`))
+        await this.fetchGuildOptions();
         if (!queues.length) return;
         for (let data of queues) {
             const index = queues.indexOf(data);
@@ -23,6 +25,7 @@ module.exports = class LaffeyPlayerHandler {
                 const channel = this.client.channels.cache.get(data.textChannel)
                 const voice = this.client.channels.cache.get(data.voiceChannel)
                 if (this.client.player.players.get(data.guildID) || !channel || !voice) return this.delete(null, data.playerID)
+                if (voice.members.filter(x => !x.user.bot).size === 0) return this.delete(null, data.playerID)
 
                 const player = this.client.player.create({
                     guild: data.guildID,
@@ -30,17 +33,41 @@ module.exports = class LaffeyPlayerHandler {
                     textChannel: data.textChannel,
                     selfDeafen: true
                 })
+
+                const guildOptions = this.client.guildOptions[data.guildID] || {}
+
+                // Add recent queue
+                player.recentQueue = data.recentQueue || [];
+                player.recentQueue = Array.from(new Set(player.recentQueue.map(track => JSON.stringify(track)))).map(track => JSON.parse(track));
+                player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
+
                 player.connect()
                 if (data.currentSong && data.currentSong.identifier) {
-                    const track = await this.buildTrack(data.currentSong);
+                    let track = data.currentSong;
+                    let spotifydata = track.spotifydata; let thumbnail = track.thumbnail; let seekable = track.isSeekable;
+                    track = await this.buildTrack(track);
+                    track.spotifydata = spotifydata; track.thumbnail = thumbnail;
+                    track.isSeekable = seekable;
                     player.queue.add(track)
                     player.play()
-                    if (data.queue.length && data.queue[0]) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
+                    if (data.queue.length && data.queue[0]) for (let track of data.queue) {
+                        let spotifydata = track.spotifydata; let thumbnail = track.thumbnail; let seekable = track.isSeekable;
+                        track = await this.buildTrack(track);
+                        track.spotifydata = spotifydata; track.thumbnail = thumbnail;
+                        track.isSeekable = seekable;
+                        player.queue.add(track);
+                    }
                 } else if (data.queue.length && data.queue[0]) {
                     const track = await this.buildTrack(data.queue.shift());
                     player.queue.add(track)
                     player.play()
-                    if (data.queue.length && data.queue[0]) for (let track of data.queue) player.queue.add(await this.buildTrack(track))
+                    if (data.queue.length && data.queue[0]) for (let track of data.queue) {
+                        let spotifydata = track.spotifydata; let thumbnail = track.thumbnail; let seekable = track.isSeekable;
+                        track = await this.buildTrack(track);
+                        track.spotifydata = spotifydata; track.thumbnail = thumbnail;
+                        track.isSeekable = seekable;
+                        player.queue.add(track);
+                    }
                 } else player.destroy()
 
                 player.set('24h', {status: data._24h})
@@ -50,6 +77,12 @@ module.exports = class LaffeyPlayerHandler {
                 else if (data.nightcore) setTimeout(() => player.setNightcore(true), 2000);
                 else if (data.vaporwave) setTimeout(() => player.setVaporwave(true), 2000);
                 else if (data._8d) setTimeout(() => player.set8D(true), 2000);
+                else if (data.karaoke) setTimeout(() => player.setKaraoke(true), 2000);
+                else if (data.pop) setTimeout(() => player.setPop(true), 2000);
+                else if (data.soft) setTimeout(() => player.setSoft(true), 2000);
+                else if (data.treblebass) setTimeout(() => player.setTreblebass(true), 2000);
+                else if (data.vibrato) setTimeout(() => player.setVibrato(true), 2000);
+                else if (data.tremolo) setTimeout(() => player.setTremolo(true), 2000);
 
                 // Handle speed and pitch here
                 if (data.speed !== 1) setTimeout(() => player.setSpeed(data.speed), 1000);
@@ -57,7 +90,6 @@ module.exports = class LaffeyPlayerHandler {
 
                 if (data.loopQueue) player.setQueueRepeat(true)
                 else if (data.loopSong) player.setTrackRepeat(true)
-
             }, index * AUTO_RESUME_DELAY)
         }
         return true
@@ -75,6 +107,7 @@ module.exports = class LaffeyPlayerHandler {
                     isStream: !!data.isStream,
                     uri: data.uri || null,
                     thumbnail: data.thumbnail || null,
+                    spotifydata: data.spotifydata || null
                 }
             }, data.requester ? await this.client.users.fetch(data.requester) : null)
             :
@@ -90,6 +123,8 @@ module.exports = class LaffeyPlayerHandler {
         if (!player || typeof player.guild !== 'string') throw new RangeError('Invalid player');
         let guildID = player.guild
         const data = await autoResume.findOne({guildID: guildID})
+
+        try {await this.saveGuildOptions(player)} catch (e) {}
 
         if (!data) {
             const newData = new autoResume(this.buildStructure(player))
@@ -115,12 +150,65 @@ module.exports = class LaffeyPlayerHandler {
             pitch: player.pitch,
             _8d: player._8d,
             _24h: player.get('24h').status,
-            playerID: generate()
+            karaoke: player.karaoke,
+            pop: player.pop,
+            soft: player.soft,
+            treblebass: player.treblebass,
+            vibrato: player.vibrato,
+            tremolo: player.tremolo,
+            playerID: generate(),
+
+            recentQueue: player.recentQueue || [],
+            autoplayOnQueueEnd: player.autoplayOnQueueEnd || false
         }
     }
 
     async delete(guildID, id) {
         if (!this.client.database) return;
         return id ? await autoResume.findOneAndRemove({playerID: id}) : await autoResume.findOneAndRemove({guildID});
+    }
+
+    async fetchGuildOptions() {
+        if (this.client.database === undefined) return setTimeout(() => this.fetchGuildOptions(), 1000)
+        if (!this.client.database) return;
+        console.log(chalk.yellow(`[LAVALINK] => [GUILD OPTIONS] Collecting GUILD specific options`))
+        const queues = await guildOptions.find()
+        console.log(chalk.greenBright(`[LAVALINK] => [GUILD OPTIONS] found ${queues.length ? `${queues.length} option${queues.length > 1 ? 's' : ''}. Setting all options` : '0 options'}`))
+        if (!queues.length) return;
+        for (let data of queues) {
+            if (data.guildID) this.client.guildOptions[data.guildID] = {
+                autoplayOnQueueEnd: data.autoplayOnQueueEnd || false
+            }
+        }
+        return true
+    }
+
+    async saveGuildOptions(player, clientGuildOptions, guildId) {
+        if (!this.client.database) return;
+        let options, guildID;
+        if (!clientGuildOptions) {
+            if (!player || typeof player.guild !== 'string') throw new RangeError('Invalid player');
+            guildID = player.guild;
+
+            options = {
+                guildID: guildID,
+                autoplayOnQueueEnd: player.autoplayOnQueueEnd
+            }
+        } else if (guildId) {
+            guildID = guildId;
+
+            options = {
+                guildID: guildID,
+                autoplayOnQueueEnd: clientGuildOptions.autoplayOnQueueEnd
+            }
+        } else throw new RangeError('Invalid request');
+
+        const data = await guildOptions.findOne({guildID: guildID})
+
+        if (!data) {
+            const newData = new guildOptions(options)
+            return await newData.save()
+        }
+        return guildOptions.findOneAndUpdate({guildID}, options);
     }
 }

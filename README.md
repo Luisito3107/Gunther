@@ -24,7 +24,8 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - *Local file (Discord attachment, metadata tags supported)*
 		- File types: MP3, MP4, FLAC, WAV, AAC and OGG
 		- Tag formats: ID3 (most common), APE, ASF, EXIF 2.3, iTunes, RIFF, Vorbis comment
- - Support for all Discord Activities (some may require the server to have Nitro)
+ - Autoplay: play a mix of similar songs when the current queue ends. See `/autoplay` slash command.
+ - Support for all Discord Activities (some may require the server to have Nitro). See `/games` and `/youtube` slash commands.
 	 - *YouTube Together*
 	 - *Poker night*
 	 - *Chess in the Park*
@@ -39,9 +40,9 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - *Putt Party*
 	 - *Sketch Heads*
 	 - *Ocho*
- - Fetch lyrics from Genius or KSoft
- - Auto resume play queue
- - Support for multiple filters and effects
+ - Fetch lyrics from Genius. See `/lyrics` slash command.
+ - Auto resume play queue on server restart
+ - Support for multiple filters and effects (using the included Lavalink). See `/filters` slash command.
 	 - *Speed*
 	 - *Pitch*
 	 - *Bass boost*
@@ -76,6 +77,8 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - `/youtube` - Starts a YouTube Together session
 	
  - **Player commands**
+	 - `/24h [ value ]` - Make the bot stay in the voice channel even if there is no queue left
+	 - `/autoplay [ value ]` - Play a mix of similar songs when the current track queue ends
 	 - `/clear` - Clear the queue
 	 - `/filters [ set ] [ reset ] [ all ]` - Get all filters status, set or reset them
 	 - `/forceplay [ song ] [ file ]` - Force the playing of a song or a file
@@ -114,7 +117,7 @@ This bot was made thinking of those who have little or no experience with these 
 	 - default-jdk
  - Credentials (refer to the Obtaining credentials section)
 	 - Discord Application ID, Public Key and Bot Token.
-	 - (Optional) Genius API Client Access Token/KSoft API Key
+	 - (Optional) Genius API Client Access Token
 	 - Spotify Client ID and Client Secret
 	 - (Optional) MongoDB URI
 
@@ -159,9 +162,8 @@ Find the `config.json.example` file and fill it with all the required informatio
       "MONGODB_URI": "Your MongoDB URI, can be empty",
 	  "SPOTIFY_CLIENT_ID": "your Spotify Client ID",
 	  "SPOTIFY_CLIENT_SECRET": "your Spotify Client Secret",
-      "LYRICS_ENGINE": "There are 3 options: ksoft, genius or google. Google doesn't need any API key",
+      "LYRICS_ENGINE": "There are 2 options: genius or google. Google doesn't need any API key",
       "GENIUS_ACCESS_TOKEN": "your Genius API Access Token, can be empty depending on your engine choice.",
-      "KSOFT_API_KEY": "your KSoft API key, can be empty depending on your engine choice.",
       "NODES": [
         {
           "HOST": "localhost",
@@ -173,11 +175,13 @@ Find the `config.json.example` file and fill it with all the required informatio
           "SECURE": false
         }
       ],
+      "_24H_COMMAND_ENABLED": false,
+      "ONLY_OWNERS_CAN_INVITE": false,
 	  "AUTO_RESUME_ENABLED": true,
       "AUTO_RESUME_DELAY": 1500,
       "DEBUG": true,
       "LOG_USAGE": false,
-      "PUBLIC_IPADDR": "The server public IP address. If set to false, then use NETWORK_DEV and NETWORK_DEV_INDEX to find it.",
+      "PUBLIC_IPADDR": "The server public IP address. If set to false, then use NETWORK_DEV and NETWORK_DEV_INDEX to make the server find it.",
       "NETWORK_DEV": "If PUBLIC_IPADDR is false, the network device to get the public IP from. Check it with `ip addr` command.",
       "NETWORK_DEV_INDEX": A number, the IP index in the network device. Check it with `ip addr` command,
       "DEBUG_SERVER": "The string ID of the Discord server where the elevated commands (like /sendembed and /restart) will be available.",
@@ -197,7 +201,7 @@ Find the `config.json.example` file and fill it with all the required informatio
 	 - If it is lower than v16.9.0, then install the n package from npm by running `npm install -g n`
 	 - Run `n stable 16.9.0` to install that version of Node.JS.
 	 - Close and reopen the terminal session in the same folder, then check version again with `node -v`
- 7. Install lastest pm2 package by running `npm install pm2@latest -g`
+ 7. Install lastest pm2 package by running `npm install -g pm2`
  8. Run `npm install` to install all the project dependencies.
  9. Navigate to the `lavalinkserver` folder, then find the `application.yml` file. Edit it:
 	 - You may want to leave everything as it is, and only change the `password` string.
@@ -215,4 +219,4 @@ Find the `config.json.example` file and fill it with all the required informatio
 		 - `node stop` or `pm2 stop all` to stop both
 
 # Disclaimer
-I will not be responsible for the use that is given to the services provided by Discord, Spotify, Deezer, Apple Music, KSoft, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.
+I will not be responsible for the use that is given to the services provided by Discord, Spotify, Deezer, Apple Music, Genius, Google, MongoDB, or any other. The use of these services is the responsibility of each user who decides to register with them.

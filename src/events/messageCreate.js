@@ -26,7 +26,7 @@ module.exports = {
         client.checkForNickname(message.guild.members.me, undefined, message);
 
         // Check for prefix commands
-        if (message.content.startsWith(PREFIX)) {
+        if (message.content.startsWith(PREFIX) && message.content.toString().replaceAll(PREFIX, "").replaceAll(" ", "").length) {
             message.channel.send({embeds: [new EmbedBuilder().setColor(client.EMBED_COLOR())
                 .setDescription("ℹ️ Prefix commands are not supported now, use slash (/) commands instead.")]});
         }

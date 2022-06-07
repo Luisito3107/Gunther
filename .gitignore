@@ -6,3 +6,6 @@
 /package-lock.json
 .env
 /laffey.iml
+/src/assets/img/thumbnails/*.jpg
+/lavalinkserver/logs
+/readmes

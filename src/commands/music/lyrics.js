@@ -85,7 +85,7 @@ module.exports = {
                 .setColor(colors[i] || EMBED_COLOR)
                 .setFooter({text: `Lyrics powered by Genius`, iconURL: GeniusLogoURL})
             )
-            return (embeds.length > 1 ? new Pagination(ctx, embeds, 360 * 1000).start() : ctx.editReply({embeds: [embeds[0]]}));
+            return new Pagination(ctx, embeds, 360 * 1000).start();
         } else {
             const lyrics = await client.lyrics.search(songTitle).catch(_ => true);
 

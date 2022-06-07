@@ -53,6 +53,8 @@ class Gunther extends Client {
                     secure: NODES[0].SECURE,
                 }]);
             // Variables
+                this.connectedToNode = false;
+                this.guildOptions = [];
                 this.AUTO_RESUME_ENABLED = AUTO_RESUME_ENABLED;
                 this.EMBED_COLOR = EMBED_COLOR;
                 this.HEX_TO_RGBTUPLE = HEX_TO_RGBTUPLE;
@@ -63,7 +65,7 @@ class Gunther extends Client {
                 this.cleanSongTitle = function(songTitle, artist) {
                     artist = artist || null;
                     songTitle = songTitle.replace(
-                        /lyrics|lyric|lyrical|official music video|\(official music video\)|audio|official|official video|official video hd|official hd video|offical video music|\(offical video music\)|extended|video|hd|topic|([()])|-|–|(\[.+\])/gi,
+                        /lyrics|lyric|lyrical|official music video|\(official music video\)|audio|official|official video|official video hd|official hd video|official video music|\(official video music\)|extended|video|hd|topic|vevo|hq|4k|mv|([()])|-|–|(\[.+\])/gi,
                         ""
                     );
                     if (artist) {songTitle = songTitle.trim().replace(new RegExp('('+artist+')', 'gi'), "");}

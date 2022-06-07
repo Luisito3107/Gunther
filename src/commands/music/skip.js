@@ -11,8 +11,10 @@ module.exports = {
         if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`⚠️ | You are not in the same voice channel as me`)]});
         if (player.queue.size <= 0) {
             player.stop()
+            client.playerHandler.delete(ctx.guildId);
             client.setClientPresence("ready");
         } else {
+            await player.setTrackRepeat(false);
             //if (!player.queue.length) return ctx.reply({embeds: [this.baseEmbed(`⚠️ | There are no more tracks in the queue`)]});
                 const {e, m} = await player.skip().catch(_ => ({e: true, m: _}));
             if (e) ctx.reply({embeds: [this.baseEmbed("💣 | Oops, an error occurred! Please try again in a few minutes.\n" + `\`\`\`${m ? m : 'No error was provided'}\`\`\``)]});

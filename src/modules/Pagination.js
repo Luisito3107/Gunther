@@ -19,16 +19,20 @@ module.exports = class LaffeyPagination {
 
     async start() {
         try {
-            const row = new ActionRowBuilder().addComponents(this.buttons.left(true), this.buttons.trash(), this.buttons.right());
-            const message = await this.ctx.editReply({embeds: [this.embeds[this.page]], components: [row]});
-            const collector = message.createMessageComponentCollector({
-                componentType: 2,
-                time: this.timeout,
-                filter: this.filter
-            });
+            if (this.embeds.length > 1) {
+                const row = new ActionRowBuilder().addComponents(this.buttons.left(true), this.buttons.trash(), this.buttons.right());
+                const message = await this.ctx.editReply({embeds: [this.embeds[this.page]], components: [row]});
+                const collector = message.createMessageComponentCollector({
+                    componentType: 2,
+                    time: this.timeout,
+                    filter: this.filter
+                });
 
-            collector.on("collect", b => this.controlHandler(b, message));
-            collector.on("end", _ => message.edit({components: [new ActionRowBuilder().setComponents(this.buttons.trash(true))]}).catch(_ => void 0));
+                collector.on("collect", b => this.controlHandler(b, message));
+                collector.on("end", _ => message.edit({components: [new ActionRowBuilder().setComponents(this.buttons.trash(true))]}).catch(_ => void 0));
+            } else {
+                const message = await this.ctx.editReply({embeds: [this.embeds[this.page]]});
+            }
         } catch (e) {
             console.log(e)
         }

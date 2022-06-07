@@ -16,7 +16,15 @@ const autoResumeSchema = new mongoose.Schema({
     pitch: Number,
     _8d: Boolean,
     _24h: Boolean,
-    playerID: String
+    karaoke: Boolean,
+    pop: Boolean,
+    soft: Boolean,
+    treblebass: Boolean,
+    vibrato: Boolean,
+    tremolo: Boolean,
+    playerID: String,
+
+    recentQueue: Array
 })
 
 module.exports = mongoose.model('autoResume', autoResumeSchema);

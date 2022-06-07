@@ -15,6 +15,10 @@ module.exports = {
                 textChannel: ctx.channel.id,
                 selfDeafen: true
             });
+
+            const guildOptions = client.guildOptions[ctx.guildId] || {}
+            player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
+
             player.connect()
             return ctx.reply({embeds: [this.baseEmbed(`👌 | Joined your voice channel`)]});
         }

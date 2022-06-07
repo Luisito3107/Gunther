@@ -45,6 +45,8 @@ module.exports = {
                     textChannel: ctx.channel.id,
                     selfDeafen: true
                 });
+                const guildOptions = client.guildOptions[ctx.guildId] || {}
+                player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
                 player.connect()
             }
             player = client.player.players.get(ctx.guildId);
@@ -79,15 +81,17 @@ module.exports = {
                 if (query.match(client.Lavasfy.spotifyPattern)) {
                     try {
                         await client.Lavasfy.requestToken();
-                        let node = client.Lavasfy.nodes.get(NODES[0].IDENTIFIER);
+                        let node = client.Lavasfy.nodes.get(client.connectedToNode || NODES[0].IDENTIFIER);
                         let lavasfyRes = await node.load(query);
     
                         if (lavasfyRes.loadType === "PLAYLIST_LOADED") {
                             res.tracks = []; let lavasfyDuration = 0;
                             await Promise.all(lavasfyRes.tracks.map(async (track) => {
+                                let spotifydata = (track.info?.spotifydata ? track.info?.spotifydata : null);
                                 let thumbnail = (track.info?.thumbnail ? track.info?.thumbnail : null);
                                 track = await track.resolve();
                                 track = await TrackUtils.build(track, ctx.user);
+                                track.spotifydata = spotifydata;
                                 track.thumbnail = thumbnail;
                                 res.tracks.push(track);
                                 lavasfyDuration += track.duration;
@@ -95,8 +99,10 @@ module.exports = {
                             res.loadType = "PLAYLIST_LOADED";
                             res.playlist = {name: lavasfyRes.playlistInfo.name, thumbnail: lavasfyRes.playlistInfo.thumbnail, duration: lavasfyDuration};
                         } else if (lavasfyRes.loadType.startsWith("TRACK")) {
+                            let spotifydata = (lavasfyRes.tracks[0].info?.spotifydata ? lavasfyRes.tracks[0].info?.spotifydata : null);
                             let thumbnail = (lavasfyRes.tracks[0].info?.thumbnail ? lavasfyRes.tracks[0].info?.thumbnail : null);
                             let track = await TrackUtils.build(await lavasfyRes.tracks[0].resolve(), ctx.user);
+                            track.spotifydata = spotifydata;
                             track.thumbnail = thumbnail;
                             res.tracks = [track];
                             res.loadType = "TRACK_LOADED";

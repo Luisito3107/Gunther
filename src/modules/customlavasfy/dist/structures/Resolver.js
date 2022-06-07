@@ -118,7 +118,8 @@ class Resolver {
                 author: spotifyTrack.artists.map(x => x.name).join(", "),
                 uri: spotifyTrack.external_urls.spotify,
                 length: spotifyTrack.duration_ms,
-                thumbnail: (spotifyTrack.album.images.length ? spotifyTrack.album.images[0].url : null)
+                thumbnail: (spotifyTrack.album.images.length ? spotifyTrack.album.images[0].url : null),
+                spotifydata: {authorid: spotifyTrack.artists.map(x => x.id), trackid: spotifyTrack.id, url: spotifyTrack.external_urls.spotify}
             },
             resolve() {
                 return _this.resolve(this);

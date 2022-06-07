@@ -1,6 +1,6 @@
 {
   "name": "gunther",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "An awesome and easy-to-setup Lavalink-Discord music bot",
   "main": "start.js",
   "dependencies": {

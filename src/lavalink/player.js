@@ -13,11 +13,14 @@ module.exports = Structure.extend('Player', player => {
             this.vaporwave = false;
             this._8d = false;
             this.karaoke = false;
-            this._pop = false;
+            this.pop = false;
             this.soft = false;
             this.treblebass = false;
             this.vibrato = false;
             this.tremolo = false;
+
+            this.recentQueue = [];
+            this.autoplayOnQueueEnd = true;
         }
 
         setSpeed(speed) {
@@ -179,9 +182,9 @@ module.exports = Structure.extend('Player', player => {
             return this
         }
 
-        setPop(_pop) {
-            if (typeof _pop != 'boolean') throw new RangeError('<Player>#setPop() must be a boolean.')
-            if (_pop) {
+        setPop(pop) {
+            if (typeof pop != 'boolean') throw new RangeError('<Player>#setPop() must be a boolean.')
+            if (pop) {
                 this.nightcore = false;
                 this.vaporwave = false;
                 this.setVaporwave(false)
@@ -212,9 +215,9 @@ module.exports = Structure.extend('Player', player => {
                         {band: 13, gain: 0},
                     ],
                 })
-                this._pop = _pop
+                this.pop = pop
             } else this.clearEffects()
-            this._pop = _pop
+            this.pop = pop
             return this
         }
 
@@ -353,7 +356,7 @@ module.exports = Structure.extend('Player', player => {
         async skip() {
             if (this.queue.length === 0) throw new Error('Queue is empty to skip')
             const current = this.queue.current
-            this.play(this.queue[0])
+            this.play(this.trackRepeat ? (this.queue[1] || this.queue[0]) : this.queue[0])
             if (this.queueRepeat) {
                 const track = TrackUtils.build({
                     track: current.track || null,
@@ -464,7 +467,7 @@ module.exports = Structure.extend('Player', player => {
             this.vaporwave = false;
             this.distortion = false;
             this.karaoke = false;
-            this._pop = false;
+            this.pop = false;
             this.soft = false;
             this.treblebass = false;
             this.vibrato = false;
@@ -487,6 +490,32 @@ module.exports = Structure.extend('Player', player => {
             }
             arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
             return arr;
+        }
+
+        addTrackToRecentQueue(client, track) {
+            let resolved = false;
+            let songArtist, songTitle, uri;
+            if (track.spotifydata) {
+                songArtist = track.spotifydata.authorid[0];
+                songTitle = track.spotifydata.trackid;
+                uri = track.spotifydata.uri;
+                resolved = true;
+            } else {
+                songArtist = client.cleanSongTitle(track.author);
+                songTitle = client.cleanSongTitle(track.title, songArtist);
+                uri = track.uri;
+            }
+
+            let trackData = {title: songTitle, author: songArtist, uri: uri, resolved: resolved}
+            this.recentQueue = Array.from(new Set(this.recentQueue.map(track => JSON.stringify(track)))).map(track => JSON.parse(track));
+            this.recentQueue = this.recentQueue.slice(0, Math.min(5, this.recentQueue.unshift(trackData)));
+            return this.recentQueue;
+        }
+
+        setAutoPlayOnQueueEnd(autoplay) {
+            if (typeof autoplay != 'boolean') throw new RangeError('<Player>#setAutoPlayOnQueueEnd() must be a boolean.')
+            this.autoplayOnQueueEnd = autoplay;
+            return this;
         }
     }
 
