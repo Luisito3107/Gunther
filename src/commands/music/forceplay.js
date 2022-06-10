@@ -54,11 +54,11 @@ module.exports = {
 
             const mm = require('music-metadata');
             const axios = require('axios').default;
-            const audioRequest = await axios.get(attachment.url, { responseType: 'arraybuffer' });
+            const audioRequest = await axios.get(attachment.attachment, { responseType: 'arraybuffer' });
             const audioBuffer = Buffer.from(audioRequest.data, "utf-8");
             metadata = await mm.parseBuffer(audioBuffer, fileformat);
 
-            query = attachment.url;
+            query = attachment.attachment;
             res = await player.search(query, ctx.user)
         } else if (subcommand == "song") {
             query = ctx.options.getString("query");
@@ -113,23 +113,44 @@ module.exports = {
         }
 
         let EMBED_COLOR = client.EMBED_COLOR();
-            var prepareQueueEmbed = function() {
-                let duration = (res.tracks[0].isStream ? "🔴 LIVE" : `\`${client.formatDuration(res.tracks[0].duration)}\``);
-                const embed = new EmbedBuilder()
-                    .setAuthor({name: `Force playing track`, iconURL: client.assetsURL_icons+"/play.png?color="+EMBED_COLOR.replace("#", "")})
-                    .setTitle(res.tracks[0].title)
-                    .setURL(res.tracks[0].uri)
-                    .setColor(EMBED_COLOR)
-                    .setFields([
-                        {name: (res.tracks[0].author.split(",").length > 1 ? "Artists" : "Artist"), value: res.tracks[0].author, inline: true},
-                        {name: "Duration", value: duration, inline: true},
-                        //{name: "Queue position", value: `\`${player.queue.size}\``, inline: true}
-                    ]);
-    
-                if (res.tracks[0].thumbnail) embed.setThumbnail(res.tracks[0].thumbnail);
-    
-                return embed;
+        var prepareQueueEmbed = function() {
+            let duration = (res.tracks[0].isStream ? "🔴 LIVE" : `\`${client.formatDuration(res.tracks[0].duration)}\``);
+            const embed = new EmbedBuilder()
+                .setAuthor({name: `Force playing track`, iconURL: client.assetsURL_icons+"/play.png?color="+EMBED_COLOR.replace("#", "")})
+                .setTitle(res.tracks[0].title)
+                .setURL(res.tracks[0].uri)
+                .setColor(EMBED_COLOR)
+                .setFields([
+                    {name: (res.tracks[0].author.split(",").length > 1 ? "Artists" : "Artist"), value: res.tracks[0].author, inline: true},
+                    {name: "Duration", value: duration, inline: true},
+                    //{name: "Queue position", value: `\`${player.queue.size}\``, inline: true}
+                ]);
+
+            if (res.tracks[0].thumbnail) embed.setThumbnail(res.tracks[0].thumbnail);
+
+            return embed;
+        }
+
+        if (Array.isArray(res.tracks)) await Promise.all(res.tracks.map(async (track, index) => {
+            if (!attachment && !track.spotifydata && !client.isValidHttpUrl(query)) {
+                let trackArtist = client.cleanSongTitle(track.author);
+                let trackTitle = client.cleanSongTitle(track.title, trackArtist);
+                res.tracks[index].title = trackTitle;
+                res.tracks[index].author = trackArtist;
+                
+                const trackResults = await client.Lavasfy.otherApiRequest("/search", {q: `track:${trackTitle}+artist:${trackArtist}`, type: "track"});
+                if (trackResults) {
+                    if (trackResults.tracks.items.length) {
+                        const selectedTrack = trackResults.tracks.items[0];
+                        res.tracks[index].spotifydata = {authorid: selectedTrack.artists.map(x => x.id), trackid: selectedTrack.id, url: selectedTrack.external_urls.spotify};
+                        res.tracks[index].thumbnail = (selectedTrack.album.images.length ? selectedTrack.album.images[0].url : null);
+                        res.tracks[index].title = selectedTrack.name;
+                        res.tracks[index].author = selectedTrack.artists.map(x => x.name).join(", ");
+                        res.tracks[index].uri = selectedTrack.external_urls.spotify;
+                    }
+                }
             }
+        }));
 
         switch (res.loadType) {
             case 'NO_MATCHES': {

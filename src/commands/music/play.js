@@ -57,7 +57,7 @@ module.exports = {
             let res = {};
             const subcommand = ctx.options.getSubcommand(false);
             if (subcommand == "file") {
-                attachment = ctx.options.getAttachment("attachment");
+                attachment = await ctx.options.getAttachment("attachment");
                 let fileformat = attachment.name.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
                 const allowedFileFormats = ["mp3", "mp4", "flac", "wav", "aac", "ogg"];
                 if (allowedFileFormats.indexOf(fileformat) == -1)
@@ -68,11 +68,11 @@ module.exports = {
 
                 const mm = require('music-metadata');
                 const axios = require('axios').default;
-                const audioRequest = await axios.get(attachment.url, { responseType: 'arraybuffer' });
+                const audioRequest = await axios.get(attachment.attachment, { responseType: 'arraybuffer' });
                 const audioBuffer = Buffer.from(audioRequest.data, "utf-8");
                 metadata = await mm.parseBuffer(audioBuffer, fileformat);
 
-                query = attachment.url;
+                query = attachment.attachment;
                 res = await player.search(query, ctx.user)
             } else if (subcommand == "song") {
                 query = ctx.options.getString("query");
@@ -141,6 +141,27 @@ module.exports = {
     
                 return embed;
             }
+
+            if (Array.isArray(res.tracks)) await Promise.all(res.tracks.map(async (track, index) => {
+                if (!attachment && !track.spotifydata && !client.isValidHttpUrl(query)) {
+                    let trackArtist = client.cleanSongTitle(track.author);
+                    let trackTitle = client.cleanSongTitle(track.title, trackArtist);
+                    res.tracks[index].title = trackTitle;
+                    res.tracks[index].author = trackArtist;
+                    
+                    const trackResults = await client.Lavasfy.otherApiRequest("/search", {q: `track:${trackTitle}+artist:${trackArtist}`, type: "track"});
+                    if (trackResults) {
+                        if (trackResults.tracks.items.length) {
+                            const selectedTrack = trackResults.tracks.items[0];
+                            res.tracks[index].spotifydata = {authorid: selectedTrack.artists.map(x => x.id), trackid: selectedTrack.id, url: selectedTrack.external_urls.spotify};
+                            res.tracks[index].thumbnail = (selectedTrack.album.images.length ? selectedTrack.album.images[0].url : null);
+                            res.tracks[index].title = selectedTrack.name;
+                            res.tracks[index].author = selectedTrack.artists.map(x => x.name).join(", ");
+                            res.tracks[index].uri = selectedTrack.external_urls.spotify;
+                        }
+                    }
+                }
+            }));
 
             switch (res.loadType) {
                 case 'NO_MATCHES': {

@@ -280,7 +280,7 @@ class lavalink extends Manager {
                     if (searchSeeds.tracks.length || searchSeeds.artists.length) {
                         let recommendationsQuery = {limit: 15}
                         if (searchSeeds.tracks.length) recommendationsQuery.seed_tracks = searchSeeds.tracks.join(",")
-                        if (searchSeeds.artists.length) recommendationsQuery.seed_artists = searchSeeds.artists.join(",")
+                        if (searchSeeds.artists.length - searchSeeds.tracks.length > 0) recommendationsQuery.seed_artists = searchSeeds.artists.join(",")
                         const recommendationsResult = await client.Lavasfy.otherApiRequest("/recommendations", recommendationsQuery);
 
                         if (recommendationsResult) {

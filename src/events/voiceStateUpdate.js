@@ -7,6 +7,7 @@ module.exports = {
         if (oldC.id === client.user.id) return;
         const target = await client.users.fetch(oldC.id)
         if (target.bot) return;
+        if (oldC.channelId == newC.channelId) return;
 
         const player = client.player?.players.get(newC.guild.id);
         if (player) {

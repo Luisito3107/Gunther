@@ -16,7 +16,8 @@ module.exports = {
         const realQueueEmbedDescription = function(){
             const musicLength = (player.queue.current.isStream ? null : ((!player.queue.current || !player.queue.current.duration || isNaN(player.queue.current.duration)) ? null : player.queue.current.duration))
             const nowTime = (!player.position || isNaN(player.position)) ? null : player.position;
-            return `**Currently playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \\[${player.queue.current.requester}\\]\n`+
+            return `💿 **Now playing:** \n[${player.queue.current.title}](${player.queue.current.uri}) \\[${player.queue.current.requester}\\]\n`+
+            `Artist(s): ${player.queue.current.author ? player.queue.current.author : "Unknown artist(s)"}\n`+
             (player.queue.current.isStream ? '🔴 LIVE' :
                 `\`${client.formatDuration(player.position)}\` `+
                 splitBar(musicLength ? Number(musicLength) : 1, nowTime ? Number(nowTime) : 2, 16, '━', '🔵')[0]+
@@ -32,22 +33,24 @@ module.exports = {
                 `\n`+ (() => {
                     const info = d.filter(x => !!x).map((track) => {
                         let trackTitle = track?.title.length >= 45 ? `${track?.title.slice(0, 45)}...` : track?.title
-                        return `\`${++j}.\` [${track.title}](${track.uri}) \n${track.author ? track.author : "Unknown artist(s)"} **|** \`${(track.isStream ? '🔴 LIVE' : client.formatDuration(track.duration))}\` \nRequested by: ${track.requester}\n`
+                        return `\`${++j}.\` [${track.title}](${track.uri}) \nArtist(s): ${track.author ? track.author : "Unknown artist(s)"} **|** \`${(track.isStream ? '🔴 LIVE' : client.formatDuration(track.duration))}\` \nRequested by: ${track.requester}\n`
                     }).join("\n");
 
                     return `${realQueueEmbedDescription()}` +
-                        `${info ? `\n\n**Up next (${player.queue.length} songs):**\n ${info}` : 'Not detected'}\n`
+                        `${info ? `\n\n🕓 **Up next (${player.queue.length} songs):**\n ${info}` : 'Not detected'}\n`
 
                 })()
-                : `\n\n**Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
+                : `\n\n🕓 **Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
                 `Add more songs using the \`play\` command!`
             )
+            .setFooter({text: (player.queueRepeat || player.trackRepeat) ? `${player.queueRepeat ? "🔁 Queue" : "🔂 Track"} loop is enabled. You can disable it with /loop command.` : null})
         )
         if (!embeds.length) embeds = [new EmbedBuilder()
             .setAuthor({name: `Player queue`, iconURL: client.assetsURL_icons+"/queue.png?color="+EMBED_COLOR.replace("#", "")})
             .setColor(EMBED_COLOR)
             .setDescription(`${realQueueEmbedDescription()}\n\n**Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
             `Add more songs using the \`play\` command!`)
+            .setFooter({text: (player.queueRepeat || player.trackRepeat) ? `${player.queueRepeat ? "🔁 Queue" : "🔂 Track"} loop is enabled. You can disable it with /loop command.` : null})
         ]
 
         await ctx.deferReply();
