@@ -249,7 +249,7 @@ module.exports = {
                 let row = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId(searchSelectId));
                 let row2 = new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(searchCancelId).setLabel("Cancel"))
                 const resultsEmbed = new EmbedBuilder()
-                    .setAuthor({name: `Songs and playlists found for ${query}`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR.replace("#", "")})
+                    .setAuthor({name: `Songs and playlists found in YouTube for ${query}`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR.replace("#", "")})
                     .setDescription(
                         res.tracks.map((track, index) => `\`${++index}.\` [${track.title}](${track.uri})\n Artist(s): ${(track.author ? track.author : "Unknown")}`).join('\n\n')
                         +"\n\n\u200B"

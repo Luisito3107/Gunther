@@ -98,7 +98,7 @@ Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating
 	 - `/queue` - See the current track queue
 	 - `/remove < position >` - Remove song from the queue
 	 - `/resume` - Resume the player
-	 - `/search < query >` - Search and play a specific song
+	 - `/search [ youtube ] [ spotify ]` - Search and play a specific song
 	 - `/seek < time >` - Seek to a time position in the current song
 	 - `/shuffle` - Shuffle the songs in the queue
 	 - `/skip` - Skip the current song
