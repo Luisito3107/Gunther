@@ -46,7 +46,6 @@ module.exports = {
                     selfDeafen: true
                 });
                 const guildOptions = client.guildOptions[ctx.guildId] || {}
-                player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
                 player.connect()
             }
             player = client.player.players.get(ctx.guildId);

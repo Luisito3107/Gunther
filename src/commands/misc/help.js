@@ -16,7 +16,7 @@ module.exports = {
 
         let commandArg = ctx.options.getString("command");
         if (commandArg) {
-            commandArg = commandArg.toLowerCase();
+            commandArg = commandArg.toLowerCase().replace("/", "");
             let commandInfo = client.commands.get(commandArg);
             if (commandInfo) {
                 let commandUsage = "", commandArguments = "", commandAliases = "";

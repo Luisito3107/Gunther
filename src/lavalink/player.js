@@ -20,7 +20,6 @@ module.exports = Structure.extend('Player', player => {
             this.tremolo = false;
 
             this.recentQueue = [];
-            this.autoplayOnQueueEnd = true;
         }
 
         setSpeed(speed) {
@@ -510,12 +509,6 @@ module.exports = Structure.extend('Player', player => {
             this.recentQueue = Array.from(new Set(this.recentQueue.map(track => JSON.stringify(track)))).map(track => JSON.parse(track));
             this.recentQueue = this.recentQueue.slice(0, Math.min(5, this.recentQueue.unshift(trackData)));
             return this.recentQueue;
-        }
-
-        setAutoPlayOnQueueEnd(autoplay) {
-            if (typeof autoplay != 'boolean') throw new RangeError('<Player>#setAutoPlayOnQueueEnd() must be a boolean.')
-            this.autoplayOnQueueEnd = autoplay;
-            return this;
         }
     }
 

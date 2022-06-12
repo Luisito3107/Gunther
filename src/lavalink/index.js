@@ -1,5 +1,3 @@
-const {TrackUtils} = require("erela.js");
-
 const {Manager} = require('erela.js');
 const spotify = require('better-erela.js-spotify').default;
 const deezer = require('erela.js-deezer');
@@ -35,7 +33,10 @@ class lavalink extends Manager {
             client.setClientPresence("ready");
         })
 
-        if (client.AUTO_RESUME_ENABLED) this.once('nodeConnect', () => client.playerHandler.autoResume())
+        if (client.AUTO_RESUME_ENABLED) this.once('nodeConnect', () => {
+            client.playerHandler.autoResume();
+            client.guildOptionsHandler.fetchGuildOptions();
+        })
 
         this.on('nodeError', (node, error) => {
             client.connectedToNode = false;
@@ -208,8 +209,9 @@ class lavalink extends Manager {
             }
 
             let EMBED_COLOR = client.EMBED_COLOR();
-            const quitPlayer = function(noQueueEmbed) {
+            const quitPlayer = async function(noQueueEmbed) {
                 client.setClientPresence("ready");
+                try { if (player.get('autoPlayEmbed')) await player.get('autoPlayEmbed').delete().catch(_ => void 0); } catch (e) {}
                 if (noQueueEmbed) channel.send({embeds: [noQueueEmbed]}).catch(_ => void 0);
                 client.playerHandler.savePlayer(player);
                 setTimeout(() => {
@@ -227,46 +229,27 @@ class lavalink extends Manager {
                     }
                 }, 120 * 1000);
             }
-            if (player.autoplayOnQueueEnd && player.recentQueue.length) {
+            client.guildOptions[player.guild] = client.guildOptions[player.guild] || {};
+            client.guildOptions[player.guild].autoplayOnQueueEnd = (client.guildOptions[player.guild].autoplayOnQueueEnd == undefined ? true : client.guildOptions[player.guild].autoplayOnQueueEnd);
+
+            if (client.guildOptions[player.guild].autoplayOnQueueEnd && player.recentQueue.length) {
                 try {
-                    let autoPlayEmbed;
-                    channel.send({embeds: [new EmbedBuilder()
+                    await channel.send({embeds: [new EmbedBuilder()
                         .setAuthor({name: "Queue finished, starting autoplay...", iconURL: client.assetsURL_icons+"/autoplay.png?color="+EMBED_COLOR.replace("#", "")})
                         .setColor(EMBED_COLOR)
                         .setDescription(`There are no more songs in the queue, a mix of similar songs will be added to the queue shortly...`)
-                        .setFooter({text: "You can turn off this feature with the /autoplay command."})]}).then(msg => {autoPlayEmbed = msg;})
+                        .setFooter({text: "You can turn off this feature with the /autoplay command."})]}).then(msg => player.set('autoPlayEmbed', msg))
 
-                    let searchSeeds = {artists: [], tracks: []}
-                    player.recentQueue = Array.from(new Set(player.recentQueue.map(track => JSON.stringify(track)))).map(track => JSON.parse(track));
-                    player.recentQueue = player.recentQueue.slice(0, Math.min(5, player.recentQueue.length));
-                    player.recentQueue.forEach((track, index) => {
-                        if (track.resolved) {
-                            searchSeeds.artists.push(track.author);
-                            searchSeeds.tracks.push(track.title);
-                            player.recentQueue.splice(index, 1);
-                        }
-                    });
-                    await Promise.all(player.recentQueue.map(async (track, index) => {
-                        if (searchSeeds.tracks.length < player.recentQueue.length) {
-                            const trackResults = await client.Lavasfy.otherApiRequest("/search", {q: `track:${track.title}+artist:${track.author}`, type: "track"});
-                            if (trackResults) {
-                                if (trackResults.tracks.items.length) {
-                                    const selectedTrack = trackResults.tracks.items[0];
-                                    searchSeeds.artists.push(selectedTrack.artists[0].id);
-                                    searchSeeds.tracks.push(selectedTrack.id);
-                                }
-                            }
-                            player.recentQueue.splice(index, 1);
-                        }
-                    }));
-                    searchSeeds.artists = [...new Set(searchSeeds.artists)].filter(n => n);
-                    searchSeeds.artists = searchSeeds.artists.slice(0, Math.min(5, searchSeeds.artists.length));
-                    searchSeeds.tracks = [...new Set(searchSeeds.tracks)].filter(n => n);
-                    searchSeeds.tracks = searchSeeds.tracks.slice(0, Math.min(5, searchSeeds.tracks.length));
+                    await client.Lavasfy.requestToken();
 
-                    const recommendationError = async function() {
+                    let searchSeeds = await client.autoplayHandler.getSeedsFromRecent(player.recentQueue);
+                    const recommendationsResult = await client.autoplayHandler.getTrackRecommendationsFromSeeds(searchSeeds);
+
+                    if (recommendationsResult.tracks.length) {
+                        await client.autoplayHandler.resolveTracksAndAddToQueue(player, recommendationsResult);
+                    } else {
                         EMBED_COLOR = client.EMBED_COLOR();
-                        try {await autoPlayEmbed.delete();} catch (e) {}
+                        try { if (player.get('autoPlayEmbed')) await player.get('autoPlayEmbed').delete().catch(_ => void 0); } catch (e) {}
                         await channel.send({embeds: [new EmbedBuilder()
                             .setAuthor({name: "Queue finished, no results for autoplay", iconURL: client.assetsURL_icons+"/queuecomplete.png?color="+EMBED_COLOR.replace("#", "")})
                             .setColor(EMBED_COLOR)
@@ -276,56 +259,6 @@ class lavalink extends Manager {
                         client.setClientPresence("ready");
                         return true;
                     }
-
-                    if (searchSeeds.tracks.length || searchSeeds.artists.length) {
-                        let recommendationsQuery = {limit: 15}
-                        if (searchSeeds.tracks.length) recommendationsQuery.seed_tracks = searchSeeds.tracks.join(",")
-                        if (searchSeeds.artists.length - searchSeeds.tracks.length > 0) recommendationsQuery.seed_artists = searchSeeds.artists.join(",")
-                        const recommendationsResult = await client.Lavasfy.otherApiRequest("/recommendations", recommendationsQuery);
-
-                        if (recommendationsResult) {
-                            if (recommendationsResult.tracks.length) {
-                                let recommendedTracks = recommendationsResult.tracks;
-                                recommendedTracks = recommendedTracks.map((track) => track.external_urls.spotify);
-
-                                await client.Lavasfy.requestToken();
-                                let node = client.Lavasfy.nodes.get(client.connectedToNode || NODES[0].IDENTIFIER);
-                                let res = {tracks: []}; let lavasfyDuration = 0;
-
-                                await Promise.all(recommendedTracks.map(async (track, index) => {
-                                    let lavasfyRes = await node.load(track);
-
-                                    let spotifydata = (lavasfyRes.tracks[0].info?.spotifydata ? lavasfyRes.tracks[0].info?.spotifydata : null);
-                                    let thumbnail = (lavasfyRes.tracks[0].info?.thumbnail ? lavasfyRes.tracks[0].info?.thumbnail : null);
-                                    track = await TrackUtils.build(await lavasfyRes.tracks[0].resolve(), client.user);
-                                    track.spotifydata = spotifydata;
-                                    track.thumbnail = thumbnail;
-                                    res.tracks.push(track);
-                                    lavasfyDuration += track.duration;
-                                }));
-                                
-                                try {await autoPlayEmbed.delete();} catch (e) {}
-                                EMBED_COLOR = /*"#00b8fb"*/ client.EMBED_COLOR();
-                                await channel.send({embeds: [new EmbedBuilder()
-                                    .setAuthor({name: "Added autoplay mix to the queue", iconURL: client.assetsURL_icons+"/autoplay.png?color="+EMBED_COLOR.replace("#", "")})
-                                    .setTitle(`Mix based on the last ${(searchSeeds.tracks.length > 1 ? `${searchSeeds.tracks.length} songs` : "song")} played ${searchSeeds.artists.length ? (searchSeeds.artists.length > 1 ? `from ${searchSeeds.artists.length} artists` : "") : ""}`)
-                                    .setColor(EMBED_COLOR)
-                                    .setDescription(`Could any of these songs be your next favorite song? ✨`)
-                                    .setFields([
-                                        {name: "Tracks", value: String(res.tracks.length), inline: true},
-                                        {name: "Duration", value: `\`${client.formatDuration(lavasfyDuration)}\``, inline: true},
-                                        //{name: "Queue position", value: `\`${Math.max(player.queue.size-res.tracks.length, 0)}\``, inline: true}
-                                    ])
-                                    .setThumbnail("https://i.ibb.co/MRd2zgN/Gunther-Auto-Play.png")
-                                    .setFooter({text: "You can turn off this feature with the /autoplay command."})
-                                ]}).catch(_ => void 0);
-
-                                await player.queue.add(res.tracks);
-                                if (!player.playing && !player.paused) player.play()
-                                client.playerHandler.savePlayer(player);
-                            } else { await recommendationError(); }
-                        } else { await recommendationError(); }
-                    } else { await recommendationError(); }
                 } catch (e) {
                     channel.send({embeds: [ new EmbedBuilder().setColor(EMBED_COLOR).setDescription(`💣 | Oops, an error occurred! Please try again in a few minutes.\n` + `\`\`\`${e ? e : 'No error was provided'}\`\`\``) ]});
                     quitPlayer();

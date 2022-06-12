@@ -6,7 +6,7 @@ This bot was created in memory of [James Michael Tyler](https://en.wikipedia.org
 ![Gunter](https://c.tenor.com/4aKNk-BWBFgAAAAC/adventure-time-penguin.gif)
 
 This bot was created in October, 2021. Then updated to Laffey 2.0 in May-June 2022.
-This is my first Github repository, so if I did something wrong or I can improve in something, please tell me!
+This is my first GitHub repository, so if I did something wrong or I can improve in something, please tell me!
 Thanks to [Weeb-Devs](https://github.com/Weeb-Devs) for their hard work creating Laffey.
 
 ## Features

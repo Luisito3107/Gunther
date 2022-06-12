@@ -2,6 +2,8 @@ const { LavasfyClient } = require("./modules/customlavasfy/dist/index.js");
 const formatDuration = require('format-duration')
 const { AUTO_RESUME_ENABLED, IP_ADDR, EMBED_COLOR, HEX_TO_RGBTUPLE, GENERATE_ICON } = new (require('./modules/guntherUtils'))();
 const { DiscordTogether } = require('discord-together');
+const guildOptionsHandler = require('./modules/guildOptionsHandler');
+const autoplayHandler = require('./modules/autoplayHandler');
 
 const {Client, Collection, EmbedBuilder} = require('discord.js');
 const {TOKEN, MONGODB_URI, OWNERS, LYRICS_ENGINE, NODES, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET} = new (require('./modules/laffeyUtils'))();
@@ -54,7 +56,9 @@ class Gunther extends Client {
                 }]);
             // Variables
                 this.connectedToNode = false;
+                this.guildOptionsHandler = new guildOptionsHandler(this);
                 this.guildOptions = [];
+                this.autoplayHandler = new autoplayHandler(this);
                 this.AUTO_RESUME_ENABLED = AUTO_RESUME_ENABLED;
                 this.EMBED_COLOR = EMBED_COLOR;
                 this.HEX_TO_RGBTUPLE = HEX_TO_RGBTUPLE;
@@ -141,7 +145,7 @@ class Gunther extends Client {
                     } catch(error) { res.writeHead(500); res.end(); console.log(error); }
                 });
                 webserver_app.listen(3000, ()=>{console.log(chalk.cyan("[DEBUG] => [WEBSERVER] Listening requests on port 3000"))});
-                /* Remove old thumbnails */
+                // Remove old thumbnails
                     const findRemoveSync = require('find-remove')
                     findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 43200 }, extensions: '.jpg'});
                     setInterval(function() {findRemoveSync(process.cwd()+"/src/assets/img/thumbnails", {age: { seconds: 43200 }, extensions: '.jpg'})}, 3600000)

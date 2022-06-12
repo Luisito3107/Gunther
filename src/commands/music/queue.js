@@ -43,6 +43,7 @@ module.exports = {
                 : `\n\n🕓 **Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
                 `Add more songs using the \`play\` command!`
             )
+            .setThumbnail(player.queue.current.thumbnail || null)
             .setFooter({text: (player.queueRepeat || player.trackRepeat) ? `${player.queueRepeat ? "🔁 Queue" : "🔂 Track"} loop is enabled. You can disable it with /loop command.` : null})
         )
         if (!embeds.length) embeds = [new EmbedBuilder()
@@ -50,6 +51,7 @@ module.exports = {
             .setColor(EMBED_COLOR)
             .setDescription(`${realQueueEmbedDescription()}\n\n**Up next (0 songs):**\nThere are no more tracks left in the queue! ` +
             `Add more songs using the \`play\` command!`)
+            .setThumbnail(player.queue.current.thumbnail || null)
             .setFooter({text: (player.queueRepeat || player.trackRepeat) ? `${player.queueRepeat ? "🔁 Queue" : "🔂 Track"} loop is enabled. You can disable it with /loop command.` : null})
         ]
 

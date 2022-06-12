@@ -46,7 +46,6 @@ module.exports = {
                 selfDeafen: true
             });
             const guildOptions = client.guildOptions[ctx.guildId] || {}
-            player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
             player.connect()
         }
         player = client.player.players.get(ctx.guildId);
@@ -75,7 +74,7 @@ module.exports = {
                     let row_spotify = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId(searchSelectId_spotify));
                     let row_spotify2 = new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(searchCancelId_spotify).setLabel("Cancel"))
                     const resultsEmbed = new EmbedBuilder()
-                        .setAuthor({name: `Songs and playlists found in Spotify for ${query}`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR_spotify.replace("#", "")})
+                        .setAuthor({name: `Tracks found in Spotify for "${query}"`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR_spotify.replace("#", "")})
                         .setDescription(
                             trackResults.map((track, index) => `\`${++index}.\` [${track.name}](${track.external_urls.spotify})\n Artist(s): ${track.artists.map(x => x.name).join(", ")}`).join('\n\n')
                             +"\n\n\u200B"
@@ -142,7 +141,6 @@ module.exports = {
                 }
             } else {
                 res = await player.search(query, ctx.user)
-                query = `\`${query}\``;
             }
         }
 
@@ -197,7 +195,7 @@ module.exports = {
         switch (res.loadType) {
             case 'NO_MATCHES': {
                 if (!player.queue.current) player.destroy();
-                return ctx.editReply({embeds: [this.baseEmbed(`🤷 | No results found for ${query}`)]});
+                return ctx.editReply({embeds: [this.baseEmbed(`🤷 | No results found for \`${query}\``)]});
             }
 
             case 'TRACK_LOADED': {
@@ -249,7 +247,7 @@ module.exports = {
                 let row = new ActionRowBuilder().addComponents(new SelectMenuBuilder().setCustomId(searchSelectId));
                 let row2 = new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(searchCancelId).setLabel("Cancel"))
                 const resultsEmbed = new EmbedBuilder()
-                    .setAuthor({name: `Songs and playlists found in YouTube for ${query}`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR.replace("#", "")})
+                    .setAuthor({name: `Tracks found in YouTube for "${query}"`, iconURL: client.assetsURL_icons+"/search.png?color="+EMBED_COLOR.replace("#", "")})
                     .setDescription(
                         res.tracks.map((track, index) => `\`${++index}.\` [${track.title}](${track.uri})\n Artist(s): ${(track.author ? track.author : "Unknown")}`).join('\n\n')
                         +"\n\n\u200B"

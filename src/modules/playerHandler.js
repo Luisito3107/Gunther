@@ -1,6 +1,5 @@
 const {TrackUtils} = require('erela.js');
 const autoResume = require('../schemas/autoResume');
-const guildOptions = require('../schemas/guildOptions');
 const chalk = require("chalk");
 const {AUTO_RESUME_DELAY} = new (require('../modules/laffeyUtils'))();
 const { generate } = require('shortid');
@@ -8,7 +7,6 @@ const { generate } = require('shortid');
 module.exports = class LaffeyPlayerHandler {
     constructor(client) {
         this.client = client;
-        // console.log(this.client)
     }
 
     async autoResume() {
@@ -17,7 +15,6 @@ module.exports = class LaffeyPlayerHandler {
         console.log(chalk.yellow(`[LAVALINK] => [AUTO RESUME] Collecting player data`))
         const queues = await autoResume.find()
         console.log(chalk.greenBright(`[LAVALINK] => [AUTO RESUME] found ${queues.length ? `${queues.length} queue${queues.length > 1 ? 's' : ''}. Resuming all queue` : '0 queue'}`))
-        await this.fetchGuildOptions();
         if (!queues.length) return;
         for (let data of queues) {
             const index = queues.indexOf(data);
@@ -39,7 +36,6 @@ module.exports = class LaffeyPlayerHandler {
                 // Add recent queue
                 player.recentQueue = data.recentQueue || [];
                 player.recentQueue = Array.from(new Set(player.recentQueue.map(track => JSON.stringify(track)))).map(track => JSON.parse(track));
-                player.autoplayOnQueueEnd = guildOptions.autoplayOnQueueEnd || false;
 
                 player.connect()
                 if (data.currentSong && data.currentSong.identifier) {
@@ -124,8 +120,6 @@ module.exports = class LaffeyPlayerHandler {
         let guildID = player.guild
         const data = await autoResume.findOne({guildID: guildID})
 
-        try {await this.saveGuildOptions(player)} catch (e) {}
-
         if (!data) {
             const newData = new autoResume(this.buildStructure(player))
             return await newData.save()
@@ -158,57 +152,12 @@ module.exports = class LaffeyPlayerHandler {
             tremolo: player.tremolo,
             playerID: generate(),
 
-            recentQueue: player.recentQueue || [],
-            autoplayOnQueueEnd: player.autoplayOnQueueEnd || false
+            recentQueue: player.recentQueue || []
         }
     }
 
     async delete(guildID, id) {
         if (!this.client.database) return;
         return id ? await autoResume.findOneAndRemove({playerID: id}) : await autoResume.findOneAndRemove({guildID});
-    }
-
-    async fetchGuildOptions() {
-        if (this.client.database === undefined) return setTimeout(() => this.fetchGuildOptions(), 1000)
-        if (!this.client.database) return;
-        console.log(chalk.yellow(`[LAVALINK] => [GUILD OPTIONS] Collecting GUILD specific options`))
-        const queues = await guildOptions.find()
-        console.log(chalk.greenBright(`[LAVALINK] => [GUILD OPTIONS] found ${queues.length ? `${queues.length} option${queues.length > 1 ? 's' : ''}. Setting all options` : '0 options'}`))
-        if (!queues.length) return;
-        for (let data of queues) {
-            if (data.guildID) this.client.guildOptions[data.guildID] = {
-                autoplayOnQueueEnd: data.autoplayOnQueueEnd || false
-            }
-        }
-        return true
-    }
-
-    async saveGuildOptions(player, clientGuildOptions, guildId) {
-        if (!this.client.database) return;
-        let options, guildID;
-        if (!clientGuildOptions) {
-            if (!player || typeof player.guild !== 'string') throw new RangeError('Invalid player');
-            guildID = player.guild;
-
-            options = {
-                guildID: guildID,
-                autoplayOnQueueEnd: player.autoplayOnQueueEnd
-            }
-        } else if (guildId) {
-            guildID = guildId;
-
-            options = {
-                guildID: guildID,
-                autoplayOnQueueEnd: clientGuildOptions.autoplayOnQueueEnd
-            }
-        } else throw new RangeError('Invalid request');
-
-        const data = await guildOptions.findOne({guildID: guildID})
-
-        if (!data) {
-            const newData = new guildOptions(options)
-            return await newData.save()
-        }
-        return guildOptions.findOneAndUpdate({guildID}, options);
     }
 }
