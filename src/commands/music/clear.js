@@ -10,6 +10,8 @@ module.exports = {
         if (player && (channel.id !== player?.voiceChannel)) return ctx.reply({embeds: [this.baseEmbed(`⚠️ | You are not in the same voice channel as me`)]});
         if (!player.queue.current) return ctx.reply({embeds: [this.baseEmbed(`💤 | Nothing is playing right now...`)]});
 
+        player.recentQueue = [];
+
         player.queue.clear(); 
 
         ctx.reply({embeds: [this.baseEmbed(`✅ | Cleared the queue`)]});

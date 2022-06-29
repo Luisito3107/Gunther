@@ -84,6 +84,9 @@ module.exports = class LaffeyPlayerHandler {
                 if (data.speed !== 1) setTimeout(() => player.setSpeed(data.speed), 1000);
                 else if (data.pitch !== 1) setTimeout(() => player.setPitch(data.pitch), 1000);
 
+                // Volume
+                if (data.volume !== 1) setTimeout(() => player.setVolume(parseInt(data.volume)), 1000);
+
                 if (data.loopQueue) player.setQueueRepeat(true)
                 else if (data.loopSong) player.setTrackRepeat(true)
             }, index * AUTO_RESUME_DELAY)
