@@ -25,10 +25,6 @@ module.exports = class laffeyUtils {
         return process.env.SPOTIFY_CLIENT_SECRET || config.SPOTIFY_CLIENT_SECRET
     }
 
-    get KSOFT_API_KEY() {
-        return process.env.KSOFT_API_KEY || config.KSOFT_API_KEY
-    }
-
     get GENIUS_API_KEY() {
         return process.env.GENIUS_ACCESS_TOKEN || config.GENIUS_ACCESS_TOKEN
     }
